@@ -21,7 +21,12 @@ public abstract class Conta {
     }
 
     public void saca(double valor) {
-        this.saldo -= valor;
+        if (valor <= this.saldo) {
+            this.saldo -= valor;
+            System.out.println("Você sacou " + getSaldo());
+        } else {
+            System.out.println("Saldo indisponível.");
+        }
     }
 
     public void deposita(double valor) {
@@ -49,9 +54,5 @@ public abstract class Conta {
 
     public double getLimite() {
         return limite;
-    }
-
-    public void setTitular(Cliente titular) {
-        this.titular = titular;
     }
 }
