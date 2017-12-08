@@ -2,12 +2,12 @@ package banco;
 
 /**
  *
- * @author kalebe
+ * @author DEV-ITEC
  */
 public abstract class Conta {
 
     private int numero;
-    double saldo;
+    private double saldo;
     private double limite;
     private Cliente titular;
 
@@ -20,45 +20,38 @@ public abstract class Conta {
 
     }
 
-    public void setSaldo(double saldo) {
-        this.saldo = saldo;
-    }
-
-    public void setLimite(double limite) {
-        this.limite = limite;
-    }
-
-    public void setTitular(Cliente titular) {
-        this.titular = titular;
-    }
-
-    public double getSaldo() {
-        return saldo;
-    }
-
-    public boolean saca(double valor) {
-        if (this.saldo < valor) {
-            return false;
-        } else {
-            double novoSaldo = this.saldo - valor;
-            this.saldo = novoSaldo;
-            return true;
-        }
+    public void saca(double valor) {
+        this.saldo -= valor;
     }
 
     public void deposita(double valor) {
         this.saldo += valor;
     }
 
-    public boolean transfere(Conta destino, double valor) {
-        boolean retirou = this.saca(valor);
-        if (retirou) {
-            return false;
-        } else {
-            this.deposita(valor);
-            return true;
-        }
+    public void transfere(Conta destino, double valor) {
+        saca(valor);
+        destino.deposita(valor);
     }
 
     public abstract void atualiza(double taxa);
+
+    public int getNumero() {
+        return numero;
+    }
+
+    public double getSaldo() {
+        return saldo;
+    }
+
+    public void setSaldo(double saldo) {
+        this.saldo = saldo;
+    }
+
+    public double getLimite() {
+        return limite;
+    }
+
+    public void setTitular(Cliente titular) {
+        this.titular = titular;
+    }
 }
