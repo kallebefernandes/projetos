@@ -2,22 +2,30 @@ package banco;
 
 /**
  *
- * @author kalebe
+ * @author DEV-ITEC
  */
-public class Conta {
+public abstract class Conta {
 
-    int numero;
-    double saldo;
-    double limite;
-    Cliente titular;
+    private int numero;
+    private double saldo;
+    private double limite;
+    private Cliente titular;
 
-    public boolean saca(double valor) {
-        if (this.saldo < valor) {
-            return false;
+    public Conta(int numero, Cliente titular) {
+        this.numero = numero;
+        this.titular = titular;
+    }
+
+    public Conta() {
+
+    }
+
+    public void saca(double valor) {
+        if (valor <= this.saldo) {
+            this.saldo -= valor;
+            System.out.println("Você sacou " + getSaldo());
         } else {
-            double novoSaldo = this.saldo - valor;
-            this.saldo = novoSaldo;
-            return true;
+            System.out.println("Saldo indisponível.");
         }
     }
 
@@ -25,13 +33,26 @@ public class Conta {
         this.saldo += valor;
     }
 
-    public boolean transfere(Conta destino, double valor) {
-        boolean retirou = this.saca(valor);
-        if (retirou) {
-            return false;
-        } else {
-            this.deposita(valor);
-            return true; 
-        }
+    public void transfere(Conta destino, double valor) {
+        saca(valor);
+        destino.deposita(valor);
+    }
+
+    public abstract void atualiza(double taxa);
+
+    public int getNumero() {
+        return numero;
+    }
+
+    public double getSaldo() {
+        return saldo;
+    }
+
+    public void setSaldo(double saldo) {
+        this.saldo = saldo;
+    }
+
+    public double getLimite() {
+        return limite;
     }
 }
