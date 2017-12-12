@@ -1,6 +1,5 @@
 package funcionario;
 
-import funcionario.Funcionario;
 import interfaces.Bonificacoes;
 
 /**

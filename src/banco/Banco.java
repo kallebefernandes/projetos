@@ -2,13 +2,10 @@ package banco;
 
 import conta.Conta;
 
-/**
- *
- * @author DEV-ITEC
- */
 public class Banco {
 
     Conta conta[];
+
     int capacidade;
 
     public Banco(int capacidade) {
