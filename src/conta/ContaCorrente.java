@@ -1,6 +1,6 @@
 package conta;
 
-import banco.Tributavel;
+import interfaces.Tributavel;
 import conta.Conta;
 
 /**

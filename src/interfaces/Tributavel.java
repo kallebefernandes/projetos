@@ -4,7 +4,7 @@ package interfaces;
  *
  * @author DEV-ITEC
  */
-interface Tributavel {
+public interface Tributavel {
 
     double getTributavel();
 }

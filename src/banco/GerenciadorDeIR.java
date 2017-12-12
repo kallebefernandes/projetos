@@ -1,5 +1,7 @@
 package banco;
 
+import interfaces.Tributavel;
+
 
 
 /**
