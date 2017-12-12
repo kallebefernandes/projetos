@@ -1,4 +1,7 @@
-package banco;
+package conta;
+
+import banco.Tributavel;
+import conta.Conta;
 
 /**
  *

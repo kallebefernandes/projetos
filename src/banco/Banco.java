@@ -1,5 +1,7 @@
 package banco;
 
+import conta.Conta;
+
 /**
  *
  * @author DEV-ITEC

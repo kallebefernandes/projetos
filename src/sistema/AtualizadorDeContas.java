@@ -1,4 +1,6 @@
-package banco;
+package sistema;
+
+import conta.Conta;
 
 /**
  *

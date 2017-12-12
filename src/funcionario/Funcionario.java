@@ -1,5 +1,6 @@
-package banco;
+package funcionario;
 
+import interfaces.Autenticavel;
 import java.util.Date;
 
 /**

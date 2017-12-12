@@ -1,4 +1,4 @@
-package banco;
+package conta;
 
 /**
  *
@@ -21,16 +21,23 @@ public abstract class Conta {
     }
 
     public void saca(double valor) {
-        if (valor <= this.saldo) {
-            this.saldo -= valor;
-            System.out.println("Você sacou " + getSaldo());
-        } else {
-            System.out.println("Saldo indisponível.");
+        try {
+            if (valor <= this.saldo) {
+                this.saldo -= valor;
+                System.out.println("Você sacou " + getSaldo());
+                throw new SaldoInsuficienteException("Saldo Insuficiente " + "tente um valor menor.");
+            }
+        } catch (SaldoInsuficienteException e) {
+            System.out.println(e.getMessage());
         }
     }
 
     public void deposita(double valor) {
-        this.saldo += valor;
+        try {
+            this.saldo += valor;
+        } catch (ValorInvalidoException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     public void transfere(Conta destino, double valor) {

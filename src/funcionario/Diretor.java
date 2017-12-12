@@ -1,12 +1,13 @@
-package banco;
+package funcionario;
+
+import interfaces.Bonificacoes;
 
 /**
  *
  * @author DEV-ITEC
  */
-public class Gerente extends Funcionario implements Bonificacoes {
+public class Diretor extends Funcionario implements Bonificacoes {
 
-    private int nmFuncGerenciados;
     private double bonificacao;
     private boolean recebeAumento;
     private boolean recebeBonificacao;
