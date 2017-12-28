@@ -47,6 +47,10 @@ public abstract class Conta {
 
     public abstract void atualiza(double taxa);
 
+    public void setTitular(Cliente titular) {
+        this.titular = titular;
+    }
+
     public int getNumero() {
         return numero;
     }
@@ -61,5 +65,27 @@ public abstract class Conta {
 
     public double getLimite() {
         return limite;
+    }
+
+    @Override
+    public String toString() {
+        return "Esta conta tem o saldo de: " + getSaldo();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        Conta outraConta = (Conta) obj;
+        if (this.numero == outraConta.numero && this.titular == outraConta.titular) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 13 * hash + this.numero;
+        return hash;
     }
 }
