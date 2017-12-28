@@ -6,16 +6,20 @@ import conta.Conta;
  *
  * @author DEV-ITEC
  */
-public class ContaPoupanca extends Conta {
+public class ContaPoupanca extends Conta implements Comparable<ContaPoupanca> {
 
-    public ContaPoupanca(int numero, Cliente titular) {
-        super(numero, titular);
+    public ContaPoupanca(int numero) {
+        super(numero);
     }
 
     @Override
     public void atualiza(double taxa) {
-        Cliente cli = new Cliente();
-        ContaPoupanca cc = new ContaPoupanca(1, cli);
+        ContaPoupanca cc = new ContaPoupanca(1);
         cc.setSaldo(getSaldo() * taxa);
+    }
+
+    @Override
+    public int compareTo(ContaPoupanca o) {
+        return Integer.compare(this.getNumero(), o.getNumero());
     }
 }

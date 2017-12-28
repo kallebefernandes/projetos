@@ -11,9 +11,8 @@ public abstract class Conta {
     private double limite;
     private Cliente titular;
 
-    public Conta(int numero, Cliente titular) {
+    public Conta(int numero) {
         this.numero = numero;
-        this.titular = titular;
     }
 
     public Conta() {
@@ -47,10 +46,6 @@ public abstract class Conta {
 
     public abstract void atualiza(double taxa);
 
-    public void setTitular(Cliente titular) {
-        this.titular = titular;
-    }
-
     public int getNumero() {
         return numero;
     }
@@ -65,6 +60,10 @@ public abstract class Conta {
 
     public double getLimite() {
         return limite;
+    }
+
+    public void setNumero(int numero) {
+        this.numero = numero;
     }
 
     @Override
