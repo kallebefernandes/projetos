@@ -9,9 +9,9 @@ import java.util.List;
  */
 public class Empresa {
 
-    private String nome;
-    private String cnpj;
-    private List<Funcionario> empregados = new ArrayList<>();
+    private final String nome;
+    private final String cnpj;
+    private final List<Funcionario> empregados = new ArrayList<>();
 
     public Empresa(String nome, String cnpj) {
         this.nome = nome;
@@ -23,14 +23,14 @@ public class Empresa {
     }
 
     public void adicionaFuncionario(Funcionario f) {
-        for (int i = 0; i < empregados.size(); i++) {
-            if (empregados.get(i) != null) {
-                empregados.set(i, f);
+        empregados.forEach((Funcionario empregado) -> {
+            if (empregado != null) {
+                empregados.add(f);
                 System.out.println("Funcionário adicionado. ");
             } else {
                 System.out.println("Posição ocupada");
             }
-        }
+        });
     }
 
     public void mostraFuncionario() {

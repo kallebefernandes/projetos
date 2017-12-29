@@ -1,37 +1,39 @@
 package banco;
 
 import conta.Conta;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class Banco {
 
-    Conta conta[];
-
-    int capacidade;
+    private List<Conta> conta;
+    private final Map<String, Conta> contas = new HashMap();
+    private final int capacidade;
 
     public Banco(int capacidade) {
         this.capacidade = capacidade;
     }
 
     public void adicionaConta(Conta c) {
-        for (int i = 0; i < conta.length; i++) {
-            if (conta[i] == null) {
-                conta[i] = c;
-            } else {
-                System.out.println("Posição ocupada");
-            }
-        }
+        contas.put(c.getTitular().getNome(), c);
     }
 
     public Conta getConta(int x) {
         if (x < capacidade) {
-            return conta[x];
+            return conta.get(x);
         } else {
             System.out.println("Essa conta não existe");
-            return null;
         }
+        return null;
     }
 
     public int getTotalDeContas() {
-        return (int) conta.length;
+        return conta.size();
+    }
+    
+    public Conta buscaPorNome(String nome){
+        return contas.get(nome);
+        
     }
 }
