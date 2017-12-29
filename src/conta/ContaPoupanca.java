@@ -12,6 +12,9 @@ public class ContaPoupanca extends Conta implements Comparable<ContaPoupanca> {
         super(numero);
     }
 
+    private ContaPoupanca() {
+    }
+
     @Override
     public void atualiza(double taxa) {
         ContaPoupanca cc = new ContaPoupanca(1);
@@ -20,6 +23,8 @@ public class ContaPoupanca extends Conta implements Comparable<ContaPoupanca> {
 
     @Override
     public int compareTo(ContaPoupanca o) {
-        return Integer.compare(this.getNumero(), o.getNumero());
+        ContaPoupanca cc = new ContaPoupanca();
+        return o.getTitular() != null ? Integer.compare(Integer.parseInt(cc.getTitular().getNome()), Integer.parseInt(o.getTitular().getNome()))
+                : Integer.compare(this.getNumero(), o.getNumero());
     }
 }

@@ -66,6 +66,14 @@ public abstract class Conta {
         this.numero = numero;
     }
 
+    public Cliente getTitular() {
+        return titular;
+    }
+
+    public void setTitular(Cliente titular) {
+        this.titular = titular;
+    }
+
     @Override
     public String toString() {
         return "Esta conta tem o saldo de: " + getSaldo();
@@ -74,11 +82,7 @@ public abstract class Conta {
     @Override
     public boolean equals(Object obj) {
         Conta outraConta = (Conta) obj;
-        if (this.numero == outraConta.numero && this.titular == outraConta.titular) {
-            return true;
-        } else {
-            return false;
-        }
+        return this.numero == outraConta.numero && this.titular == outraConta.titular;
     }
 
     @Override
