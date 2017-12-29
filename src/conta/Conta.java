@@ -80,15 +80,27 @@ public abstract class Conta {
     }
 
     @Override
-    public boolean equals(Object obj) {
-        Conta outraConta = (Conta) obj;
-        return this.numero == outraConta.numero && this.titular == outraConta.titular;
-    }
-
-    @Override
     public int hashCode() {
         int hash = 7;
         hash = 13 * hash + this.numero;
         return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Conta other = (Conta) obj;
+        if (this.numero != other.numero) {
+            return false;
+        }
+        return true;
     }
 }
