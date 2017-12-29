@@ -14,12 +14,15 @@ import java.io.OutputStreamWriter;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 
 /**
  *
  * @author kalebe
  */
-public class ArquivoCliente {
+public class ArquivoCliente implements Runnable {
+
+    Cliente c = new Cliente();
 
     public void escreveArquivoCliente(Cliente c) {
         try {
@@ -48,10 +51,11 @@ public class ArquivoCliente {
 //            linha = br.readLine();
 //        }
     }
+
     public void lerArquivoTeclado() throws IOException {
         InputStream is = new FileInputStream("ArquivoCliente.txt");
         Scanner entrada = new Scanner(is);
-        
+
         System.out.println("Digite sua mensagem:");
         while (entrada.hasNextLine()) {
             System.out.println(entrada.nextLine());
@@ -65,6 +69,17 @@ public class ArquivoCliente {
         try (BufferedWriter bfr = new BufferedWriter(osw)) {
             bfr.write(c.toString());
             bfr.close();
+        }
+    }
+
+    @Override
+    public void run() {
+        try {
+            escreveArquivoCliente(c);
+            gerarArquivoCopia(c);
+        } catch (IOException ex) {
+            String message = ex.getMessage();
+            JOptionPane.showMessageDialog(null, message);
         }
     }
 }
