@@ -10,14 +10,14 @@ import java.io.IOException;
  */
 public class TestaIO {
     public static void main(String[] args) throws IOException {
-        ArquivoCliente aqc = new ArquivoCliente();
         Cliente c = new Cliente();
         
         c.setCpf("1");
-        c.setNome("k");
-        c.setSobrenome("l");
-        aqc.escreveArquivoCliente(c);
-        aqc.lerArquivo();
-        aqc.gerarArquivoCopia(c);
+        c.setNome("ksdfs");
+        c.setSobrenome("l545");
+        ArquivoCliente aqc = new ArquivoCliente(c);
+        aqc.gravaArquivoCliente("Arquivo", c, true);
+//        aqc.lerArquivo();
+//        aqc.gerarArquivoCopia(c);
     }
 }

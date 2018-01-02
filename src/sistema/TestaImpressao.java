@@ -19,7 +19,7 @@ public class TestaImpressao {
         c.setCpf(cpf);
         c.setSobrenome(sobrenome);
         
-        Runnable run = new ArquivoCliente();
+        Runnable run = new ArquivoCliente(c);
         Thread exec = new Thread(run);
         exec.start();
         
