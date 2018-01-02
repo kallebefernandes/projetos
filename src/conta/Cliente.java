@@ -11,6 +11,15 @@ public class Cliente {
     private String nome;
     private String sobrenome;
     private String cpf;
+    private int senha;
+
+    public int getSenha() {
+        return senha;
+    }
+
+    public void setSenha(int senha) {
+        this.senha = senha;
+    }
 
     public String getNome() {
         return nome;
@@ -39,7 +48,8 @@ public class Cliente {
     @Override
     public String toString() {
         String s;
-        s = "Nome do Cliente: " + getNome() + " " + getSobrenome() + " CPF: " + getCpf();
+        s = "NOME: " + getNome() + " SOBRENOME: " + getSobrenome() + " CPF: " + getCpf() + "SENHA: " + getSenha();
+        System.out.println("--------------------------------------------------------------------------------------");
         return s;
     }
 

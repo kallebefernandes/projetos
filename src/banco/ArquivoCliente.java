@@ -2,19 +2,11 @@ package banco;
 
 import conta.Cliente;
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
-import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -48,16 +40,6 @@ public class ArquivoCliente implements Runnable {
             }
         } catch (IOException ex) {
             Logger.getLogger(ArquivoCliente.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
-    public void lerArquivoTeclado() throws IOException {
-        InputStream is = new FileInputStream("ArquivoCliente.txt");
-        Scanner entrada = new Scanner(is);
-
-        System.out.println("Digite sua mensagem:");
-        while (entrada.hasNextLine()) {
-            System.out.println(entrada.nextLine());
         }
     }
 
