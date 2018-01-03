@@ -1,19 +1,33 @@
 package telas;
 
-import interfaces.Autenticavel;
+import banco.ArquivoCliente;
+import conta.Cliente;
+import funcionario.Funcionario;
+import java.io.IOException;
+import java.text.ParseException;
+import java.util.InputMismatchException;
 import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JFormattedTextField;
+import javax.swing.JOptionPane;
+import javax.swing.text.MaskFormatter;
 
 /**
  *
  * @author DEV-ITEC
  */
-public class TelaCliente extends javax.swing.JPanel implements Autenticavel{
+public class TelaCliente extends javax.swing.JPanel {
+
+    private final Cliente c = new Cliente();
 
     public TelaCliente() {
         initComponents();
+        novaTela();
         carregaMascaras();
         Random random = new Random();
         jTextPaneContaNumero.setText(String.valueOf(random.nextInt()));
+        setLabeluncionario();
     }
 
     /**
@@ -28,51 +42,51 @@ public class TelaCliente extends javax.swing.JPanel implements Autenticavel{
         buttonGroup1 = new javax.swing.ButtonGroup();
         buttonGroup2 = new javax.swing.ButtonGroup();
         jLabel1 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
-        jTextField3 = new javax.swing.JTextField();
+        jTextFieldNome = new javax.swing.JTextField();
+        jTextFieldSobrenome = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
-        jRadioButton1 = new javax.swing.JRadioButton();
-        jRadioButton2 = new javax.swing.JRadioButton();
+        jRadioButtonCC = new javax.swing.JRadioButton();
+        jRadioButtonCP = new javax.swing.JRadioButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         jTextPaneContaNumero = new javax.swing.JTextPane();
-        jButton1 = new javax.swing.JButton();
+        jButtonSalvar = new javax.swing.JButton();
         jLabelLogado = new javax.swing.JLabel();
-        jPasswordField1 = new javax.swing.JPasswordField();
+        jPasswordFieldSenha = new javax.swing.JPasswordField();
+        jFormattedTextCPF = new javax.swing.JFormattedTextField();
+
+        setToolTipText("Tela Cliente");
+        setName("Cadastro de Cliente"); // NOI18N
 
         jLabel1.setText("Nome:");
 
-        jTextField1.setText("jTextField1");
+        jLabel2.setText("Sobrenome:");
 
-        jTextField2.setText("jTextField1");
+        jLabel3.setText("CPF:");
 
-        jTextField3.setText("jTextField1");
+        jLabel4.setText("Senha:");
 
-        jLabel2.setText("Nome:");
+        jRadioButtonCC.setFont(new java.awt.Font("Monospaced", 0, 12)); // NOI18N
+        jRadioButtonCC.setSelected(true);
+        jRadioButtonCC.setText("Conta Corrente");
+        jRadioButtonCC.setAutoscrolls(true);
 
-        jLabel3.setText("Nome:");
-
-        jLabel4.setText("Nome:");
-
-        jRadioButton1.setFont(new java.awt.Font("Monospaced", 0, 12)); // NOI18N
-        jRadioButton1.setSelected(true);
-        jRadioButton1.setText("Conta Corrente");
-        jRadioButton1.setAutoscrolls(true);
-
-        jRadioButton2.setFont(new java.awt.Font("Monospaced", 0, 12)); // NOI18N
-        jRadioButton2.setText("Conta Poupança");
+        jRadioButtonCP.setFont(new java.awt.Font("Monospaced", 0, 12)); // NOI18N
+        jRadioButtonCP.setText("Conta Poupança");
 
         jTextPaneContaNumero.setEditable(false);
         jScrollPane1.setViewportView(jTextPaneContaNumero);
         jTextPaneContaNumero.getAccessibleContext().setAccessibleName("");
 
-        jButton1.setText("jButton1");
+        jButtonSalvar.setText("Salvar");
+        jButtonSalvar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonSalvarActionPerformed(evt);
+            }
+        });
 
         jLabelLogado.setText("jLabel5");
-
-        jPasswordField1.setText("jPasswordField1");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -81,32 +95,27 @@ public class TelaCliente extends javax.swing.JPanel implements Autenticavel{
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel4, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addComponent(jRadioButtonCC)
+                        .addGap(8, 8, 8)
+                        .addComponent(jRadioButtonCP))
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 222, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 97, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addGroup(layout.createSequentialGroup()
-                            .addComponent(jLabel4)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, 277, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(layout.createSequentialGroup()
-                            .addComponent(jLabel1)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                            .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 277, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(18, 18, 18)
+                        .addComponent(jButtonSalvar, javax.swing.GroupLayout.PREFERRED_SIZE, 107, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addComponent(jRadioButton1)
-                        .addGap(8, 8, 8)
-                        .addComponent(jRadioButton2))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addComponent(jLabel3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 277, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addComponent(jLabel2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, 277, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap())
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel1))
+                        .addGap(1, 1, 1)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jTextFieldNome)
+                            .addComponent(jTextFieldSobrenome)
+                            .addComponent(jPasswordFieldSenha)
+                            .addComponent(jFormattedTextCPF, javax.swing.GroupLayout.DEFAULT_SIZE, 277, Short.MAX_VALUE))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addComponent(jLabelLogado, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
@@ -115,57 +124,169 @@ public class TelaCliente extends javax.swing.JPanel implements Autenticavel{
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jTextFieldNome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jTextFieldSobrenome, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel2))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel3))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel3)
+                    .addComponent(jFormattedTextCPF, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(jPasswordField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jPasswordFieldSenha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jRadioButton1)
-                    .addComponent(jRadioButton2))
+                    .addComponent(jRadioButtonCC)
+                    .addComponent(jRadioButtonCP))
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 96, Short.MAX_VALUE)
-                    .addComponent(jScrollPane1))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1)
+                    .addComponent(jButtonSalvar, javax.swing.GroupLayout.DEFAULT_SIZE, 103, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
                 .addComponent(jLabelLogado))
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButtonSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSalvarActionPerformed
+        if (isCPF(jFormattedTextCPF.getText())) {
+            setCliente();
+            ArquivoCliente aqc = new ArquivoCliente(c);
+            aqc.gravaArquivoCliente("ArquivoCliente", c, true);
+            try {
+                aqc.gerarArquivoCopia(c);
+            } catch (IOException ex) {
+                Logger.getLogger(TelaCliente.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            novaTela();
+            TelaConta tc = new TelaConta();
+            tc.setVisible(true);
+            tc.setFocusable(true);
+        } else {
+            JOptionPane.showMessageDialog(jScrollPane1, "CPF não é válido");
+        }
+    }//GEN-LAST:event_jButtonSalvarActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.ButtonGroup buttonGroup1;
     private javax.swing.ButtonGroup buttonGroup2;
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButtonSalvar;
+    private javax.swing.JFormattedTextField jFormattedTextCPF;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabelLogado;
-    private javax.swing.JPasswordField jPasswordField1;
-    private javax.swing.JRadioButton jRadioButton1;
-    private javax.swing.JRadioButton jRadioButton2;
+    private javax.swing.JPasswordField jPasswordFieldSenha;
+    private javax.swing.JRadioButton jRadioButtonCC;
+    private javax.swing.JRadioButton jRadioButtonCP;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
+    private javax.swing.JTextField jTextFieldNome;
+    private javax.swing.JTextField jTextFieldSobrenome;
     private javax.swing.JTextPane jTextPaneContaNumero;
     // End of variables declaration//GEN-END:variables
 
-    public boolean autenticaSenha(int senha) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    private void carregaMascaras() {
+        try {
+            MaskFormatter mascaraCpf = new MaskFormatter("###.###.###-##");
+            JFormattedTextField cpf = new JFormattedTextField(mascaraCpf);
+            jFormattedTextCPF.add(cpf);
+        } catch (ParseException ex) {
+            Logger.getLogger(TelaCliente.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
-    private void carregaMascaras() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    private void setLabeluncionario() {
+        Funcionario func = new Funcionario();
+        String nome = func.getNome();
+        jLabelLogado.setText(nome);
+    }
+
+    public Cliente setCliente() {
+        c.setNome(jTextFieldNome.getText());
+        c.setSobrenome(jTextFieldSobrenome.getText());
+        c.setCpf(jFormattedTextCPF.getText().trim());
+        c.setNumeroConta(jTextPaneContaNumero.getText());
+        if (jRadioButtonCC.isSelected()) {
+            c.setTipoDeConta("Conta Corrente");
+        } else if (jRadioButtonCP.isSelected()) {
+            c.setTipoDeConta("Conta Poupança");
+        } else {
+            c.setTipoDeConta("Não Selecionado");
+        }
+
+        return c;
+    }
+    
+    public final void novaTela(){
+     jFormattedTextCPF.setText("");
+     jLabelLogado.setText("");
+     jPasswordFieldSenha.setText("");
+     jTextFieldNome.setText("");
+     jTextFieldSobrenome.setText("");
+    }
+
+    public static boolean isCPF(String CPF) {
+        if (CPF.equals("00000000000") || CPF.equals("11111111111")
+                || CPF.equals("22222222222") || CPF.equals("33333333333")
+                || CPF.equals("44444444444") || CPF.equals("55555555555")
+                || CPF.equals("66666666666") || CPF.equals("77777777777")
+                || CPF.equals("88888888888") || CPF.equals("99999999999")
+                || (CPF.length() != 11)) {
+            return (false);
+        }
+
+        char dig10, dig11;
+        int sm, i, r, num, peso;
+
+        try {
+            // Calculo do 1o. Digito Verificador
+            sm = 0;
+            peso = 10;
+            for (i = 0; i < 9; i++) {
+
+                // converte o i-esimo caractere do CPF em um numero:
+                // por exemplo, transforma o caractere '0' no inteiro 0         
+                // (48 eh a posicao de '0' na tabela ASCII)         
+                num = (int) (CPF.charAt(i) - 48);
+                sm = sm + (num * peso);
+                peso = peso - 1;
+            }
+
+            r = 11 - (sm % 11);
+            if ((r == 10) || (r == 11)) {
+                dig10 = '0';
+            } else {
+                dig10 = (char) (r + 48); // converte no respectivo caractere numerico
+            }
+
+            // Calculo do 2o. Digito Verificador
+            sm = 0;
+            peso = 11;
+            for (i = 0; i < 10; i++) {
+                num = (int) (CPF.charAt(i) - 48);
+                sm = sm + (num * peso);
+                peso = peso - 1;
+            }
+
+            r = 11 - (sm % 11);
+            if ((r == 10) || (r == 11)) {
+                dig11 = '0';
+            } else {
+                dig11 = (char) (r + 48);
+            }
+
+            // Verifica se os digitos calculados conferem com os digitos informados.
+            if ((dig10 == CPF.charAt(9)) && (dig11 == CPF.charAt(10))) {
+                return (true);
+            } else {
+                return (false);
+            }
+        } catch (InputMismatchException erro) {
+            return (false);
+        }
     }
 }

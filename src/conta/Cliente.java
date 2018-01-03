@@ -11,6 +11,8 @@ public class Cliente {
     private String nome;
     private String sobrenome;
     private String cpf;
+    private String tipoDeConta;
+    private String numeroConta;
     private int senha;
 
     public int getSenha() {
@@ -45,10 +47,27 @@ public class Cliente {
         this.cpf = cpf;
     }
 
+    public String getTipoDeConta() {
+        return tipoDeConta;
+    }
+
+    public void setTipoDeConta(String tipoDeConta) {
+        this.tipoDeConta = tipoDeConta;
+    }
+
+    public String getNumeroConta() {
+        return numeroConta;
+    }
+
+    public void setNumeroConta(String numeroConta) {
+        this.numeroConta = numeroConta;
+    }
+
     @Override
     public String toString() {
         String s;
-        s = "NOME: " + getNome() + " SOBRENOME: " + getSobrenome() + " CPF: " + getCpf() + "SENHA: " + getSenha();
+        s = "NOME: " + getNome() + " SOBRENOME: " + getSobrenome() + " CPF: " + getCpf() + "SENHA: " + getSenha()
+                + "Tipo da Conta: " + getTipoDeConta() + "Número da Conta " + getNumeroConta();
         System.out.println("--------------------------------------------------------------------------------------");
         return s;
     }

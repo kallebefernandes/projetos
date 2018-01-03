@@ -80,6 +80,10 @@ public class Funcionario implements Autenticavel {
         }
     }
 
+    public String getNome() {
+        return nome;
+    }
+
     public Date getDtAdmissao() {
         return dtAdmissao;
     }
