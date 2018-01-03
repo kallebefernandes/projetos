@@ -1,23 +1,22 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package telas;
 
+import funcionario.Funcionario;
 import interfaces.Autenticavel;
+import javax.swing.JOptionPane;
 
 /**
  *
  * @author DEV-ITEC
  */
-public class TelaLogin extends javax.swing.JPanel implements Autenticavel{
+public class TelaLogin extends javax.swing.JFrame implements Autenticavel {
 
-    /**
-     * Creates new form TelaLogin
-     */
+    Funcionario func = new Funcionario();
+
     public TelaLogin() {
         initComponents();
+        jTextFieldUsuario.setText("123");
+        String nome = JOptionPane.showInputDialog("Cadastre sua senha !!");
+        func.setSenha(Integer.parseInt(nome));
     }
 
     /**
@@ -36,6 +35,11 @@ public class TelaLogin extends javax.swing.JPanel implements Autenticavel{
         jLabelSenha = new javax.swing.JLabel();
 
         jButtonLogar.setText("Logar");
+        jButtonLogar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonLogarActionPerformed(evt);
+            }
+        });
 
         jLabelUsuario.setText("Usuário");
 
@@ -74,11 +78,11 @@ public class TelaLogin extends javax.swing.JPanel implements Autenticavel{
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    @Override
-    public boolean autenticaSenha(int senha) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
+    private void jButtonLogarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonLogarActionPerformed
+        if (autenticaSenha(func.getSenha())) {
+            this.dispose();
+        }
+    }//GEN-LAST:event_jButtonLogarActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonLogar;
@@ -87,4 +91,12 @@ public class TelaLogin extends javax.swing.JPanel implements Autenticavel{
     private javax.swing.JPasswordField jPasswordFieldSenha;
     private javax.swing.JTextField jTextFieldUsuario;
     // End of variables declaration//GEN-END:variables
+
+    @Override
+    public boolean autenticaSenha(int senha) {
+        if (func.ativo()) {
+            return func.autenticaSenha(Integer.parseInt(jPasswordFieldSenha.getText()));
+        }
+        return false;
+    }
 }

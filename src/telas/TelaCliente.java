@@ -10,6 +10,9 @@ import funcionario.Funcionario;
 import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.InputMismatchException;
 import java.util.Random;
 import java.util.logging.Level;
@@ -214,6 +217,8 @@ public class TelaCliente extends javax.swing.JPanel {
 
     private void setLabelfuncionario() {
         Funcionario func = new Funcionario();
+        Calendar date = new GregorianCalendar();
+        func.setDtAdmissao(date.getTime());
         String nome = func.getNome();
         jLabelLogado.setText(nome);
     }
