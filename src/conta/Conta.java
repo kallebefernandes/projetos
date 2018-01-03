@@ -76,7 +76,7 @@ public abstract class Conta {
 
     @Override
     public String toString() {
-        return "Esta conta tem o saldo de: " + getSaldo();
+        return "Esta conta de número "+ getNumero() + " tem o saldo de: " + getSaldo() + " Titular: " + getTitular().toString();
     }
 
     @Override

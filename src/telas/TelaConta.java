@@ -1,9 +1,12 @@
 package telas;
 
+import banco.ArquivoBanco;
 import conta.Cliente;
 import conta.Conta;
 import conta.ContaCorrente;
 import conta.ContaPoupanca;
+import java.io.File;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 
 /**
@@ -73,6 +76,11 @@ public class TelaConta extends JFrame {
 
         jButtonExtrato.setFont(new java.awt.Font("Arial Narrow", 1, 18)); // NOI18N
         jButtonExtrato.setText("Extrato");
+        jButtonExtrato.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonExtratoActionPerformed(evt);
+            }
+        });
 
         jButtonFechar.setFont(new java.awt.Font("Segoe WP Black", 1, 14)); // NOI18N
         jButtonFechar.setForeground(new java.awt.Color(255, 0, 0));
@@ -91,8 +99,8 @@ public class TelaConta extends JFrame {
             }
         });
 
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
-        this.setLayout(layout);
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
@@ -129,9 +137,9 @@ public class TelaConta extends JFrame {
                     .addComponent(jTextFieldDeposita, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButtonDeposita, javax.swing.GroupLayout.DEFAULT_SIZE, 43, Short.MAX_VALUE))
                 .addGap(9, 9, 9)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButtonSaca, javax.swing.GroupLayout.DEFAULT_SIZE, 43, Short.MAX_VALUE)
-                    .addComponent(jTextFieldSaca, javax.swing.GroupLayout.DEFAULT_SIZE, 43, Short.MAX_VALUE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButtonSaca, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jTextFieldSaca, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jTextFieldTransfere, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -172,9 +180,11 @@ public class TelaConta extends JFrame {
         if (cli.getTipoDeConta().equals("Conta Corrente")) {
             Conta cont = new ContaCorrente(Integer.parseInt(cli.getNumeroConta()));
             conta.transfere(cont, Double.parseDouble(jButtonTransfere.getText()));
+            conta.atualiza(0.06);
         } else {
             Conta cont = new ContaPoupanca(Integer.parseInt(cli.getNumeroConta()));
             conta.transfere(cont, Double.parseDouble(jButtonTransfere.getText()));
+            conta.atualiza(0.03);
         }
     }//GEN-LAST:event_jButtonTransfereActionPerformed
 
@@ -185,6 +195,14 @@ public class TelaConta extends JFrame {
             conta.getSaldo();
         }
     }//GEN-LAST:event_jButtonSaldoActionPerformed
+
+    private void jButtonExtratoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonExtratoActionPerformed
+        JFileChooser arquivo = new JFileChooser();
+        File file = arquivo.getSelectedFile();
+        
+        ArquivoBanco arqb = new ArquivoBanco();
+        arqb.gerarExtrato(file);
+    }//GEN-LAST:event_jButtonExtratoActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

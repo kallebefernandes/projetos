@@ -21,9 +21,9 @@
               <Group type="103" groupAlignment="1" attributes="0">
                   <Component id="jLabel1" alignment="1" min="-2" pref="339" max="-2" attributes="0"/>
                   <Group type="102" attributes="0">
-                      <Component id="jButton2" min="-2" pref="148" max="-2" attributes="0"/>
+                      <Component id="jButtonCliente" min="-2" pref="148" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="36" max="-2" attributes="0"/>
-                      <Component id="jButton1" min="-2" pref="147" max="-2" attributes="0"/>
+                      <Component id="jButtonConta" min="-2" pref="147" max="-2" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace pref="38" max="32767" attributes="0"/>
@@ -35,8 +35,8 @@
           <Group type="102" alignment="0" attributes="0">
               <EmptySpace min="-2" pref="64" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
-                  <Component id="jButton2" alignment="3" min="-2" pref="150" max="-2" attributes="0"/>
-                  <Component id="jButton1" alignment="3" min="-2" pref="150" max="-2" attributes="0"/>
+                  <Component id="jButtonCliente" alignment="3" min="-2" pref="150" max="-2" attributes="0"/>
+                  <Component id="jButtonConta" alignment="3" min="-2" pref="150" max="-2" attributes="0"/>
               </Group>
               <EmptySpace pref="61" max="32767" attributes="0"/>
               <Component id="jLabel1" min="-2" max="-2" attributes="0"/>
@@ -46,15 +46,21 @@
     </DimensionLayout>
   </Layout>
   <SubComponents>
-    <Component class="javax.swing.JButton" name="jButton1">
+    <Component class="javax.swing.JButton" name="jButtonConta">
       <Properties>
         <Property name="text" type="java.lang.String" value="Criar Conta"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonContaActionPerformed"/>
+      </Events>
     </Component>
-    <Component class="javax.swing.JButton" name="jButton2">
+    <Component class="javax.swing.JButton" name="jButtonCliente">
       <Properties>
         <Property name="text" type="java.lang.String" value="Cadastrar Cliente"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonClienteActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabel1">
       <Properties>

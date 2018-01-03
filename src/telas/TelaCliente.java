@@ -1,14 +1,20 @@
 package telas;
 
 import banco.ArquivoCliente;
+import banco.Banco;
 import conta.Cliente;
+import conta.Conta;
+import conta.ContaCorrente;
+import conta.ContaPoupanca;
 import funcionario.Funcionario;
+import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
 import java.util.InputMismatchException;
 import java.util.Random;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFileChooser;
 import javax.swing.JFormattedTextField;
 import javax.swing.JOptionPane;
 import javax.swing.text.MaskFormatter;
@@ -20,6 +26,7 @@ import javax.swing.text.MaskFormatter;
 public class TelaCliente extends javax.swing.JPanel {
 
     private final Cliente c = new Cliente();
+    private final Banco conta = new Banco();
 
     public TelaCliente() {
         initComponents();
@@ -27,7 +34,7 @@ public class TelaCliente extends javax.swing.JPanel {
         carregaMascaras();
         Random random = new Random();
         jTextPaneContaNumero.setText(String.valueOf(random.nextInt()));
-        setLabeluncionario();
+        setLabelfuncionario();
     }
 
     /**
@@ -152,20 +159,26 @@ public class TelaCliente extends javax.swing.JPanel {
 
     private void jButtonSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSalvarActionPerformed
         if (isCPF(jFormattedTextCPF.getText())) {
-            setCliente();
-            ArquivoCliente aqc = new ArquivoCliente(c);
-            aqc.gravaArquivoCliente("ArquivoCliente", c, true);
             try {
-                aqc.gerarArquivoCopia(c);
+                setCliente();
+                setConta();
+                JFileChooser arquivo = new JFileChooser();
+                File file = arquivo.getSelectedFile();
+                ArquivoCliente aqc = new ArquivoCliente(c);
+                aqc.lerConteudoArquivo(file);
+                aqc.gravaArquivoCliente("ArquivoCliente", c, true);
+                try {
+                    aqc.gerarArquivoCopia(c);
+                } catch (IOException ex) {
+                    Logger.getLogger(TelaCliente.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                novaTela();
+                chamaTelaConta();
             } catch (IOException ex) {
-                Logger.getLogger(TelaCliente.class.getName()).log(Level.SEVERE, null, ex);
+                JOptionPane.showMessageDialog(this, "Não foi possível gravar cliente. " + ex, "Atenção !!!", JOptionPane.ERROR_MESSAGE);
             }
-            novaTela();
-            TelaConta tc = new TelaConta();
-            tc.setVisible(true);
-            tc.setFocusable(true);
         } else {
-            JOptionPane.showMessageDialog(jScrollPane1, "CPF não é válido");
+            JOptionPane.showMessageDialog(this, "CPF não é válido");
         }
     }//GEN-LAST:event_jButtonSalvarActionPerformed
 
@@ -199,7 +212,7 @@ public class TelaCliente extends javax.swing.JPanel {
         }
     }
 
-    private void setLabeluncionario() {
+    private void setLabelfuncionario() {
         Funcionario func = new Funcionario();
         String nome = func.getNome();
         jLabelLogado.setText(nome);
@@ -220,13 +233,23 @@ public class TelaCliente extends javax.swing.JPanel {
 
         return c;
     }
-    
-    public final void novaTela(){
-     jFormattedTextCPF.setText("");
-     jLabelLogado.setText("");
-     jPasswordFieldSenha.setText("");
-     jTextFieldNome.setText("");
-     jTextFieldSobrenome.setText("");
+
+    public void setConta() {
+        if (c.getTipoDeConta().equals("Conta Corrente")) {
+            Conta cont = new ContaCorrente(Integer.parseInt(c.getNumeroConta()));
+            conta.adicionaConta(cont);
+        } else {
+            Conta cont = new ContaPoupanca(Integer.parseInt(c.getNumeroConta()));
+            conta.adicionaConta(cont);
+        }
+    }
+
+    public final void novaTela() {
+        jFormattedTextCPF.setText("");
+        jLabelLogado.setText("");
+        jPasswordFieldSenha.setText("");
+        jTextFieldNome.setText("");
+        jTextFieldSobrenome.setText("");
     }
 
     public static boolean isCPF(String CPF) {
@@ -288,5 +311,11 @@ public class TelaCliente extends javax.swing.JPanel {
         } catch (InputMismatchException erro) {
             return (false);
         }
+    }
+
+    private void chamaTelaConta() {
+        TelaConta tc = new TelaConta();
+        tc.setVisible(true);
+        tc.setFocusable(true);
     }
 }

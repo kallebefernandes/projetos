@@ -1,7 +1,5 @@
 package conta;
 
-import conta.Conta;
-
 /**
  *
  * @author DEV-ITEC
