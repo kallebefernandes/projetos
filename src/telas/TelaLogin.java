@@ -8,15 +8,15 @@ import javax.swing.JOptionPane;
  *
  * @author DEV-ITEC
  */
-public class TelaLogin extends javax.swing.JFrame implements Autenticavel {
+public class TelaLogin extends javax.swing.JPanel implements Autenticavel {
 
     Funcionario func = new Funcionario();
 
     public TelaLogin() {
-        initComponents();
-        jTextFieldUsuario.setText("123");
         String nome = JOptionPane.showInputDialog("Cadastre sua senha !!");
         func.setSenha(Integer.parseInt(nome));
+        initComponents();
+        jTextFieldUsuario.setText("123");
     }
 
     /**
@@ -80,7 +80,7 @@ public class TelaLogin extends javax.swing.JFrame implements Autenticavel {
 
     private void jButtonLogarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonLogarActionPerformed
         if (autenticaSenha(func.getSenha())) {
-            this.dispose();
+//            this.dispose();
         }
     }//GEN-LAST:event_jButtonLogarActionPerformed
 

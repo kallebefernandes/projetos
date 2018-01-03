@@ -20,19 +20,19 @@ public class Funcionario implements Autenticavel {
     private boolean recebeAumento;
 
     public Funcionario() {
-        setFuncionario();
+//        setFuncionario();
         estaNaEmpresa = true;
     }
 
-    private void setFuncionario() {
-        Funcionario func = new Funcionario();
-        func.setNome(nome);
-        func.setDepartamento(departamento);
-        func.setDtAdmissao(dtAdmissao);
-        func.setRg(rg);
-        func.setSalario(salario);
-        func.setSenha(senha);
-    }
+//    private void setFuncionario() {
+//        Funcionario func = new Funcionario();
+//        func.setNome(nome);
+//        func.setDepartamento(departamento);
+//        func.setDtAdmissao(dtAdmissao);
+//        func.setRg(rg);
+//        func.setSalario(salario);
+//        func.setSenha(senha);
+//    }
 
     public void mostraFuncionario() {
         System.out.println("------------- Informações do Funcionário -----------");
