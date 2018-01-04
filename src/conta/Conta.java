@@ -7,7 +7,7 @@ package conta;
 public abstract class Conta {
 
     private int numero;
-    private double saldo;
+    private double saldo = 0;
     private double limite;
     private Cliente titular;
 

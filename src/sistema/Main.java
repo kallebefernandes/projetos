@@ -1,6 +1,6 @@
 package sistema;
 
-import telas.TelaPrinciipal;
+import telas.TelaLoginn;
 
 /**
  *
@@ -9,7 +9,7 @@ import telas.TelaPrinciipal;
 public class Main {
 
     public static void main(String[] args) {
-        TelaPrinciipal telaPrincipal = new TelaPrinciipal();
-        telaPrincipal.setVisible(true);
+        TelaLoginn telaloginn = new TelaLoginn();
+        telaloginn.setVisible(true);
     }
 }

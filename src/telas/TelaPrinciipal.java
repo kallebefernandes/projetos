@@ -8,7 +8,6 @@ public class TelaPrinciipal extends javax.swing.JFrame {
 
     public TelaPrinciipal() {
         initComponents();
-        chamaTelaLogin();
     }
 
     /**
@@ -22,11 +21,11 @@ public class TelaPrinciipal extends javax.swing.JFrame {
 
         jButtonConta = new javax.swing.JButton();
         jButtonCliente = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jButtonConta.setText("Criar Conta");
+        jButtonConta.setEnabled(false);
         jButtonConta.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonContaActionPerformed(evt);
@@ -40,20 +39,15 @@ public class TelaPrinciipal extends javax.swing.JFrame {
             }
         });
 
-        jLabel1.setText("jLabel1");
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(24, 24, 24)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 339, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButtonCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(36, 36, 36)
-                        .addComponent(jButtonConta, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(32, 32, 32)
+                .addComponent(jButtonCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(36, 36, 36)
+                .addComponent(jButtonConta, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(37, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -63,9 +57,7 @@ public class TelaPrinciipal extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButtonCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButtonConta, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 61, Short.MAX_VALUE)
-                .addComponent(jLabel1)
-                .addContainerGap())
+                .addContainerGap(86, Short.MAX_VALUE))
         );
 
         pack();
@@ -119,13 +111,10 @@ public class TelaPrinciipal extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonCliente;
     private javax.swing.JButton jButtonConta;
-    private javax.swing.JLabel jLabel1;
     // End of variables declaration//GEN-END:variables
 
     private void chamaTelaLogin() {
         TelaLoginn login = new TelaLoginn();
         login.setVisible(true);
-        login.setFocusable(true);
     }
-
 }

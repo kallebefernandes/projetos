@@ -92,6 +92,8 @@ public class TelaLoginn extends javax.swing.JFrame implements Autenticavel {
     private void jButtonLogarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonLogarActionPerformed
         if (autenticaSenha(func.getSenha())) {
             TelaLoginn.this.dispose();
+            TelaPrinciipal tp = new TelaPrinciipal();
+            tp.setVisible(true);
         }
     }//GEN-LAST:event_jButtonLogarActionPerformed
 
@@ -138,9 +140,10 @@ public class TelaLoginn extends javax.swing.JFrame implements Autenticavel {
 
     @Override
     public boolean autenticaSenha(int senha) {
-        if (func.ativo()) {
+        if (func.ativo(func)) {
             return func.autenticaSenha(Integer.parseInt(jPasswordFieldSenha.getText()));
+        } else {
+            return false;
         }
-        return false;
     }
 }

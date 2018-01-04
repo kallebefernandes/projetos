@@ -3,10 +3,8 @@ package telas;
 import banco.ArquivoCliente;
 import banco.Banco;
 import conta.Cliente;
-import conta.Conta;
-import conta.ContaCorrente;
-import conta.ContaPoupanca;
 import funcionario.Funcionario;
+import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
@@ -14,6 +12,8 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.InputMismatchException;
 import java.util.Random;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JFormattedTextField;
 import javax.swing.JOptionPane;
@@ -153,20 +153,34 @@ public class TelaClientes extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSalvarActionPerformed
-        if (isCPF(jFormattedTextCPF.getText())) {
-            setCliente();
-            JFileChooser arquivo = new JFileChooser();
-            File file = arquivo.getSelectedFile();
-            ArquivoCliente aqc = new ArquivoCliente(c);
-            aqc.gravaArquivoCliente("ArquivoCliente", c, true);
+        if (isCPF(jFormattedTextCPF.getText()) && !verificaCampos()) {
             try {
-                aqc.gerarArquivoCopia(c);
+                setCliente();
+                if (!verificaNumero()) {
+                    JFileChooser arquivo = new JFileChooser();
+                    arquivo.setFileSelectionMode(JFileChooser.FILES_ONLY);
+                    arquivo.showOpenDialog(this);
+                    File file = arquivo.getSelectedFile();
+                    if (file != null) {
+                        ArquivoCliente aqc = new ArquivoCliente(c);
+                        aqc.lerConteudoArquivo(file);
+                        aqc.gravaArquivoCliente("ArquivoCliente", c, true);
+                        try {
+                            aqc.gerarArquivoCopia(c);
+                        } catch (IOException ex) {
+                            JOptionPane.showMessageDialog(this, "Não foi possível gerar arquivo cópia " + ex, "Atenção !!", JOptionPane.ERROR_MESSAGE);
+                        }
+                    } else{
+                        JOptionPane.showMessageDialog(this, "Selecione um arquivo texto pra gravação do cliente. ", "Atenção !!", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+                }
+                novaTela();
+                chamaTelaConta();
+                fechaTela();
             } catch (IOException ex) {
-                JOptionPane.showMessageDialog(this, "Não foi possível gerar arquivo cópia " + ex, "Atenção !!", JOptionPane.ERROR_MESSAGE);
+                Logger.getLogger(TelaClientes.class.getName()).log(Level.SEVERE, null, ex);
             }
-            novaTela();
-            chamaTelaConta();
-            fechaTela();
         } else {
             JOptionPane.showMessageDialog(this, "CPF não é válido");
         }
@@ -326,13 +340,36 @@ public class TelaClientes extends javax.swing.JFrame {
     }
 
     private void chamaTelaConta() {
-        TelaContas tc = new TelaContas();
+        TelaContas tc = new TelaContas(c);
         tc.setVisible(true);
         tc.setFocusable(true);
     }
-    
-    public void fechaTela(){
+
+    public void fechaTela() {
         TelaClientes.this.dispose();
     }
 
+    public boolean verificaCampos() {
+        if ((jTextFieldNome.getText().equals("") || jTextFieldNome.getText().isEmpty())
+                && (jTextFieldSobrenome.getText().equals("") || jTextFieldSobrenome.getText().isEmpty())
+                && (jTextPaneContaNumero.getText().equals("") || jTextPaneContaNumero.getText().isEmpty())
+                && (jPasswordFieldSenha.getPassword().equals("") || jPasswordFieldSenha.getText().isEmpty())) {
+            JOptionPane.showMessageDialog(this, "Preencher os campos obrigatoriamente. ", "Atenção !!!", JOptionPane.ERROR_MESSAGE);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean verificaNumero() {
+        String numeros = "0123456789";
+        KeyEvent evt = null;
+        if ((numeros.contains(evt.getKeyChar()+"") || jTextFieldNome.getText().matches("^[0-9]*$"))
+                || (jTextFieldSobrenome.getText().contains("^[0-9]") || jTextFieldSobrenome.getText().matches("^[0-9]*$"))) {
+            JOptionPane.showMessageDialog(this, "Digite somente letras, por favor. ", "Atenção !!", JOptionPane.ERROR_MESSAGE);
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

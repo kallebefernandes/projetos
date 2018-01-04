@@ -20,19 +20,8 @@ public class Funcionario implements Autenticavel {
     private boolean recebeAumento;
 
     public Funcionario() {
-//        setFuncionario();
         estaNaEmpresa = true;
     }
-
-//    private void setFuncionario() {
-//        Funcionario func = new Funcionario();
-//        func.setNome(nome);
-//        func.setDepartamento(departamento);
-//        func.setDtAdmissao(dtAdmissao);
-//        func.setRg(rg);
-//        func.setSalario(salario);
-//        func.setSenha(senha);
-//    }
 
     public void mostraFuncionario() {
         System.out.println("------------- Informações do Funcionário -----------");
@@ -41,12 +30,10 @@ public class Funcionario implements Autenticavel {
         System.out.println("Data de Admissão: " + dtAdmissao);
         System.out.println("Data de Demissão: " + dtDemissao);
         System.out.println("RG: " + rg);
-        System.out.println("Está na Empresa: " + ativo());
     }
 
-    public boolean ativo() {
-        Funcionario f = new Funcionario();
-        if (f.getDtAdmissao() != null) {
+    public boolean ativo(Funcionario f) {
+        if (f.getDtAdmissao() != null && f.getDtDemissao() == null) {
             f.setEstaNaEmpresa(true);
             System.out.println("Funcionário está ativo na Empresa ");
             return true;
@@ -86,6 +73,10 @@ public class Funcionario implements Autenticavel {
 
     public Date getDtAdmissao() {
         return dtAdmissao;
+    }
+
+    public Date getDtDemissao() {
+        return dtDemissao;
     }
 
     public int getSenha() {

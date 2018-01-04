@@ -2,11 +2,11 @@ package telas;
 
 import banco.ArquivoBanco;
 import conta.Cliente;
-import conta.Conta;
 import conta.ContaCorrente;
 import conta.ContaPoupanca;
 import java.io.File;
 import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -15,9 +15,14 @@ import javax.swing.JFileChooser;
 public class TelaContas extends javax.swing.JFrame {
 
     private Cliente cli;
-    private Conta conta;
+    private double saldo;
 
-    public TelaContas() {
+    public TelaContas(Cliente cli) {
+        initComponents();
+        this.cli = cli;
+    }
+
+    TelaContas() {
         initComponents();
     }
 
@@ -99,6 +104,8 @@ public class TelaContas extends javax.swing.JFrame {
             }
         });
 
+        jTextFieldSaldo.setEditable(false);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -160,43 +167,59 @@ public class TelaContas extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonSaldoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSaldoActionPerformed
-        if (cli.getTipoDeConta().equals("Conta Corrente")) {
-            conta.getSaldo();
-        } else {
-            conta.getSaldo();
-        }
+        jTextFieldSaldo.setText(String.valueOf(saldo));
     }//GEN-LAST:event_jButtonSaldoActionPerformed
 
     private void jButtonDepositaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDepositaActionPerformed
-        if (cli.getTipoDeConta().equals("Conta Corrente")) {
-            Conta cont = new ContaCorrente(Integer.parseInt(cli.getNumeroConta()));
-            cont.setSaldo(Double.parseDouble(jButtonDeposita.getText()));
-            conta.deposita(Double.parseDouble(jButtonDeposita.getText()));
-        } else {
-            Conta cont = new ContaPoupanca(Integer.parseInt(cli.getNumeroConta()));
-            cont.setSaldo(Double.parseDouble(jButtonDeposita.getText()));
-            conta.deposita(Double.parseDouble(jButtonDeposita.getText()));
+        if (verificaNumero()) {
+            if (cli.getTipoDeConta().equals("Conta Corrente")) {
+                ContaCorrente contac = new ContaCorrente(Integer.parseInt(cli.getNumeroConta()));
+                contac.setSaldo(Double.parseDouble(jTextFieldDeposita.getText()));
+                contac.deposita(Double.parseDouble(jTextFieldDeposita.getText()));
+                saldo = contac.getSaldo();
+            } else {
+                ContaPoupanca contap = new ContaPoupanca(Integer.parseInt(cli.getNumeroConta()));
+                contap.setSaldo(Double.parseDouble(jTextFieldDeposita.getText()));
+                contap.deposita(Double.parseDouble(jTextFieldDeposita.getText()));
+                saldo = contap.getSaldo();
+            }
         }
     }//GEN-LAST:event_jButtonDepositaActionPerformed
 
     private void jButtonTransfereActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonTransfereActionPerformed
-        if (cli.getTipoDeConta().equals("Conta Corrente")) {
-            Conta cont = new ContaCorrente(Integer.parseInt(cli.getNumeroConta()));
-            conta.transfere(cont, Double.parseDouble(jButtonTransfere.getText()));
-            conta.atualiza(0.06);
-        } else {
-            Conta cont = new ContaPoupanca(Integer.parseInt(cli.getNumeroConta()));
-            conta.transfere(cont, Double.parseDouble(jButtonTransfere.getText()));
-            conta.atualiza(0.03);
+        if (verificaNumero()) {
+            if (cli.getTipoDeConta().equals("Conta Corrente")) {
+                ContaCorrente contac = new ContaCorrente(Integer.parseInt(cli.getNumeroConta()));
+                contac.transfere(contac, Double.parseDouble(jTextFieldTransfere.getText()));
+                contac.atualiza(0.06);
+                saldo = contac.getSaldo();
+            } else {
+                ContaPoupanca contap = new ContaPoupanca(Integer.parseInt(cli.getNumeroConta()));
+                contap.transfere(contap, Double.parseDouble(jTextFieldTransfere.getText()));
+                contap.atualiza(0.03);
+                saldo = contap.getSaldo();
+            }
         }
     }//GEN-LAST:event_jButtonTransfereActionPerformed
 
     private void jButtonSacaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSacaActionPerformed
-        conta.saca(Double.parseDouble(jButtonSaca.getText()));
+        if (verificaNumero()) {
+            if (cli.getTipoDeConta().equals("Conta Corrente")) {
+                ContaCorrente contac = new ContaCorrente(Integer.parseInt(cli.getNumeroConta()));
+                contac.saca(Double.parseDouble(jTextFieldSaca.getText()));
+                saldo = contac.getSaldo();
+            } else {
+                ContaPoupanca contap = new ContaPoupanca(Integer.parseInt(cli.getNumeroConta()));
+                contap.saca(Double.parseDouble(jTextFieldSaca.getText()));
+                saldo = contap.getSaldo();
+            }
+        }
     }//GEN-LAST:event_jButtonSacaActionPerformed
 
     private void jButtonExtratoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonExtratoActionPerformed
         JFileChooser arquivo = new JFileChooser();
+        arquivo.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        arquivo.showSaveDialog(this);
         File file = arquivo.getSelectedFile();
 
         ArquivoBanco arqb = new ArquivoBanco();
@@ -252,4 +275,15 @@ public class TelaContas extends javax.swing.JFrame {
     private javax.swing.JTextField jTextFieldSaldo;
     private javax.swing.JTextField jTextFieldTransfere;
     // End of variables declaration//GEN-END:variables
+
+    public boolean verificaNumero() {
+        if ((jTextFieldDeposita.getText().contains("^[0-9]") || jTextFieldDeposita.getText().matches("^[0-9]*$"))
+                || (jTextFieldSaca.getText().contains("^[0-9]") || jTextFieldSaca.getText().matches("^[0-9]*$"))
+                || (jTextFieldTransfere.getText().contains("^[0-9]") || jTextFieldTransfere.getText().matches("^[0-9]*$"))) {
+            return true;
+        } else {
+            JOptionPane.showMessageDialog(this, "Digite somente números, por favor. ", "Atenção !!", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+    }
 }
