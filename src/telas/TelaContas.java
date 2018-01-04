@@ -7,18 +7,17 @@ import conta.ContaCorrente;
 import conta.ContaPoupanca;
 import java.io.File;
 import javax.swing.JFileChooser;
-import javax.swing.JFrame;
 
 /**
  *
- * @author DEV-ITEC
+ * @author kalebe
  */
-public class TelaConta extends JFrame {
+public class TelaContas extends javax.swing.JFrame {
 
     private Cliente cli;
     private Conta conta;
 
-    public TelaConta() {
+    public TelaContas() {
         initComponents();
     }
 
@@ -31,6 +30,7 @@ public class TelaConta extends JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jButtonSaldo = new javax.swing.JButton();
         jTextFieldDeposita = new javax.swing.JTextField();
         jTextFieldSaca = new javax.swing.JTextField();
         jTextFieldTransfere = new javax.swing.JTextField();
@@ -40,9 +40,17 @@ public class TelaConta extends JFrame {
         jButtonExtrato = new javax.swing.JButton();
         jButtonFechar = new javax.swing.JButton();
         jTextFieldSaldo = new javax.swing.JTextField();
-        jButtonSaldo = new javax.swing.JButton();
 
-        setName("Conta"); // NOI18N
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setTitle("Tela de Conta");
+
+        jButtonSaldo.setFont(new java.awt.Font("Tekton Pro", 0, 14)); // NOI18N
+        jButtonSaldo.setText("Saldo da Conta");
+        jButtonSaldo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonSaldoActionPerformed(evt);
+            }
+        });
 
         jTextFieldDeposita.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
 
@@ -91,14 +99,6 @@ public class TelaConta extends JFrame {
             }
         });
 
-        jButtonSaldo.setFont(new java.awt.Font("Tekton Pro", 0, 14)); // NOI18N
-        jButtonSaldo.setText("Saldo da Conta");
-        jButtonSaldo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonSaldoActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -144,9 +144,9 @@ public class TelaConta extends JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jTextFieldTransfere, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButtonTransfere, javax.swing.GroupLayout.DEFAULT_SIZE, 44, Short.MAX_VALUE))
-                .addGap(18, 20, Short.MAX_VALUE)
+                .addGap(18, 18, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButtonSaldo, javax.swing.GroupLayout.DEFAULT_SIZE, 88, Short.MAX_VALUE)
+                    .addComponent(jButtonSaldo, javax.swing.GroupLayout.DEFAULT_SIZE, 30, Short.MAX_VALUE)
                     .addComponent(jTextFieldSaldo))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -154,11 +154,18 @@ public class TelaConta extends JFrame {
                     .addComponent(jButtonFechar, javax.swing.GroupLayout.PREFERRED_SIZE, 59, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap())
         );
+
+        pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButtonFecharActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonFecharActionPerformed
-        TelaConta.this.dispose();
-    }//GEN-LAST:event_jButtonFecharActionPerformed
+    private void jButtonSaldoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSaldoActionPerformed
+        if (cli.getTipoDeConta().equals("Conta Corrente")) {
+            conta.getSaldo();
+        } else {
+            conta.getSaldo();
+        }
+    }//GEN-LAST:event_jButtonSaldoActionPerformed
 
     private void jButtonDepositaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDepositaActionPerformed
         if (cli.getTipoDeConta().equals("Conta Corrente")) {
@@ -172,10 +179,6 @@ public class TelaConta extends JFrame {
         }
     }//GEN-LAST:event_jButtonDepositaActionPerformed
 
-    private void jButtonSacaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSacaActionPerformed
-        conta.saca(Double.parseDouble(jButtonSaca.getText()));
-    }//GEN-LAST:event_jButtonSacaActionPerformed
-
     private void jButtonTransfereActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonTransfereActionPerformed
         if (cli.getTipoDeConta().equals("Conta Corrente")) {
             Conta cont = new ContaCorrente(Integer.parseInt(cli.getNumeroConta()));
@@ -188,22 +191,54 @@ public class TelaConta extends JFrame {
         }
     }//GEN-LAST:event_jButtonTransfereActionPerformed
 
-    private void jButtonSaldoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSaldoActionPerformed
-        if (cli.getTipoDeConta().equals("Conta Corrente")) {
-            conta.getSaldo();
-        } else {
-            conta.getSaldo();
-        }
-    }//GEN-LAST:event_jButtonSaldoActionPerformed
+    private void jButtonSacaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSacaActionPerformed
+        conta.saca(Double.parseDouble(jButtonSaca.getText()));
+    }//GEN-LAST:event_jButtonSacaActionPerformed
 
     private void jButtonExtratoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonExtratoActionPerformed
         JFileChooser arquivo = new JFileChooser();
         File file = arquivo.getSelectedFile();
-        
+
         ArquivoBanco arqb = new ArquivoBanco();
         arqb.gerarExtrato(file);
     }//GEN-LAST:event_jButtonExtratoActionPerformed
 
+    private void jButtonFecharActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonFecharActionPerformed
+        TelaContas.this.dispose();
+    }//GEN-LAST:event_jButtonFecharActionPerformed
+
+    /**
+     * @param args the command line arguments
+     */
+    public static void main(String args[]) {
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ClassNotFoundException ex) {
+            java.util.logging.Logger.getLogger(TelaContas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (InstantiationException ex) {
+            java.util.logging.Logger.getLogger(TelaContas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (IllegalAccessException ex) {
+            java.util.logging.Logger.getLogger(TelaContas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+            java.util.logging.Logger.getLogger(TelaContas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+
+        /* Create and display the form */
+        java.awt.EventQueue.invokeLater(() -> {
+            new TelaContas().setVisible(true);
+        });
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonDeposita;

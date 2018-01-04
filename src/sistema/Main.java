@@ -1,15 +1,15 @@
 package sistema;
 
-import telas.TelaPrincipal;
+import telas.TelaPrinciipal;
 
 /**
  *
  * @author DEV-ITEC
  */
 public class Main {
+
     public static void main(String[] args) {
-        
-        TelaPrincipal telaPrincipal = new TelaPrincipal();
+        TelaPrinciipal telaPrincipal = new TelaPrinciipal();
         telaPrincipal.setVisible(true);
     }
 }
