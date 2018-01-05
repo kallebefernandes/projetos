@@ -51,8 +51,6 @@ public class ArquivoBanco {
 
     @SuppressWarnings("null")
     public void gerarExtrato(File file, Cliente cli, Conta c) {
-        cli = this.cli;
-        c= this.c;
         try (FileReader arquiv = new FileReader(file)) {
             BufferedReader lerArq = new BufferedReader(arquiv);
 
@@ -61,8 +59,6 @@ public class ArquivoBanco {
                 linha = lerArq.readLine(); // lê da segunda até a última linha
                 if (linha.contains(cli.getNumeroConta())) {
                     gravaArquivoConta("Extrato", c, true);
-                } else {
-                    System.out.println(" Número da conta não encontrado. ");
                 }
             }
         } catch (FileNotFoundException ex) {

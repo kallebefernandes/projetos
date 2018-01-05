@@ -22,7 +22,7 @@ public class ContaPoupanca extends Conta implements Comparable<ContaPoupanca> {
     @Override
     public int compareTo(ContaPoupanca o) {
         ContaPoupanca cc = new ContaPoupanca();
-        return o.getTitular() != null ? Integer.compare(Integer.parseInt(cc.getTitular().getNome()), Integer.parseInt(o.getTitular().getNome()))
+        return o.getTitular() != null ? Integer.compare(Integer.parseInt(cc.getTitular()), Integer.parseInt(o.getTitular()))
                 : Integer.compare(this.getNumero(), o.getNumero());
     }
 }

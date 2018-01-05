@@ -2,8 +2,10 @@ package telas;
 
 import banco.ArquivoBanco;
 import conta.Cliente;
+import conta.Conta;
 import conta.ContaCorrente;
 import conta.ContaPoupanca;
+import conta.SaldoInsuficienteException;
 import java.io.File;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -14,16 +16,14 @@ import javax.swing.JOptionPane;
  */
 public class TelaContas extends javax.swing.JFrame {
 
-    private Cliente cli;
+    private final Cliente cli;
     private double saldo;
+    private final Conta conta;
 
-    public TelaContas(Cliente cli) {
+    public TelaContas(Cliente cli, Conta conta) {
         initComponents();
         this.cli = cli;
-    }
-
-    TelaContas() {
-        initComponents();
+        this.conta = conta;
     }
 
     /**
@@ -171,120 +171,25 @@ public class TelaContas extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonSaldoActionPerformed
 
     private void jButtonDepositaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDepositaActionPerformed
-        if (jTextFieldDeposita.getText().isEmpty() || jTextFieldDeposita.getText().equals("")) {
-            JOptionPane.showMessageDialog(this, "Digite algum valor, por favor. ", "Atenção !!", JOptionPane.ERROR_MESSAGE);
-        } else {
-            if (verificaNumero()) {
-                if (cli.getTipoDeConta().equals("Conta Corrente")) {
-                    ContaCorrente contac = new ContaCorrente(Integer.parseInt(cli.getNumeroConta()));
-                    contac.deposita(Double.parseDouble(jTextFieldDeposita.getText()));
-                    saldo = contac.getSaldo();
-                    jTextFieldDeposita.setText("");
-                } else {
-                    ContaPoupanca contap = new ContaPoupanca(Integer.parseInt(cli.getNumeroConta()));
-                    contap.deposita(Double.parseDouble(jTextFieldDeposita.getText()));
-                    saldo = contap.getSaldo();
-                    jTextFieldDeposita.setText("");
-                }
-            }
-        }
+        depositaValor();
     }//GEN-LAST:event_jButtonDepositaActionPerformed
 
     private void jButtonTransfereActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonTransfereActionPerformed
-        if (jTextFieldTransfere.getText().isEmpty() || jTextFieldTransfere.getText().equals("")) {
-            JOptionPane.showMessageDialog(this, "Digite algum valor, por favor. ", "Atenção !!", JOptionPane.ERROR_MESSAGE);
-        } else {
-            if (verificaNumero()) {
-                if (cli.getTipoDeConta().equals("Conta Corrente")) {
-                    ContaCorrente contac = new ContaCorrente(Integer.parseInt(cli.getNumeroConta()));
-                    contac.transfere(contac, Double.parseDouble(jTextFieldTransfere.getText()));
-                    contac.atualiza(0.06);
-                    saldo = contac.getSaldo();
-                    jTextFieldTransfere.setText("");
-                } else {
-                    ContaPoupanca contap = new ContaPoupanca(Integer.parseInt(cli.getNumeroConta()));
-                    contap.transfere(contap, Double.parseDouble(jTextFieldTransfere.getText()));
-                    contap.atualiza(0.03);
-                    saldo = contap.getSaldo();
-                    jTextFieldTransfere.setText("");
-                }
-            }
-        }
+        transfereValor();
     }//GEN-LAST:event_jButtonTransfereActionPerformed
 
     private void jButtonSacaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSacaActionPerformed
-        if (jTextFieldSaca.getText().isEmpty() || jTextFieldSaca.getText().equals("")) {
-            JOptionPane.showMessageDialog(this, "Digite algum valor, por favor. ", "Atenção !!", JOptionPane.ERROR_MESSAGE);
-        } else {
-            if (verificaNumero()) {
-                if (cli.getTipoDeConta().equals("Conta Corrente")) {
-                    ContaCorrente contac = new ContaCorrente(Integer.parseInt(cli.getNumeroConta()));
-                    contac.saca(Double.parseDouble(jTextFieldSaca.getText()));
-                    saldo = contac.getSaldo();
-                    jTextFieldSaca.setText("");
-                } else {
-                    ContaPoupanca contap = new ContaPoupanca(Integer.parseInt(cli.getNumeroConta()));
-                    contap.saca(Double.parseDouble(jTextFieldSaca.getText()));
-                    saldo = contap.getSaldo();
-                    jTextFieldTransfere.setText("");
-                }
-            }
-        }
+        sacaValor();
     }//GEN-LAST:event_jButtonSacaActionPerformed
 
     private void jButtonExtratoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonExtratoActionPerformed
-        JFileChooser arquivo = new JFileChooser();
-        arquivo.setFileSelectionMode(JFileChooser.FILES_ONLY);
-        arquivo.showSaveDialog(this);
-        File file = arquivo.getSelectedFile();
-
-        ArquivoBanco arqb = new ArquivoBanco();
-        if (cli.getTipoDeConta().equals("Conta Corrente")) {
-            ContaCorrente contac = new ContaCorrente(Integer.parseInt(cli.getNumeroConta()));
-            arqb.gerarExtrato(file, cli, contac);
-        } else {
-            ContaPoupanca contap = new ContaPoupanca(Integer.parseInt(cli.getNumeroConta()));
-            arqb.gerarExtrato(file, cli, contap);
-        }
-
+        extrato();
     }//GEN-LAST:event_jButtonExtratoActionPerformed
 
     private void jButtonFecharActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonFecharActionPerformed
         TelaContas.this.dispose();
     }//GEN-LAST:event_jButtonFecharActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(TelaContas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(TelaContas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(TelaContas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(TelaContas.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(() -> {
-            new TelaContas().setVisible(true);
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonDeposita;
@@ -300,12 +205,111 @@ public class TelaContas extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     public boolean verificaNumero() {
-        if (jTextFieldDeposita.getText().matches("^[0-9]*$") || jTextFieldSaca.getText().matches("^[0-9]*$")
-                || jTextFieldTransfere.getText().matches("^[0-9]*$")) {
+        if (contemSomenteNumeros(jTextFieldDeposita.getText()) || contemSomenteNumeros(jTextFieldSaca.getText())
+                || contemSomenteNumeros(jTextFieldTransfere.getText())) {
             return true;
         } else {
             JOptionPane.showMessageDialog(this, "Digite somente números, por favor. ", "Atenção !!", JOptionPane.ERROR_MESSAGE);
             return false;
+        }
+    }
+
+    public boolean contemSomenteNumeros(String str) {
+        if (str == null || str.length() == 0) {
+            return false;
+        }
+        for (int i = 0; i < str.length(); i++) {
+            //Se encontrar um não-caractere retornará falso
+            if (!Character.isDigit(str.charAt(i))) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public void sacaValor() {
+        if (jTextFieldSaca.getText().isEmpty() || jTextFieldSaca.getText().equals("")) {
+            JOptionPane.showMessageDialog(this, "Digite algum valor, por favor. ", "Atenção !!", JOptionPane.ERROR_MESSAGE);
+        } else {
+            if (verificaNumero()) {
+                if (cli.getTipoDeConta().equals("Conta Corrente")) {
+                    try {
+                        conta.saca(Double.parseDouble(jTextFieldSaca.getText()));
+                        saldo = conta.getSaldo();
+                        jTextFieldSaca.setText("");
+                    } catch (SaldoInsuficienteException ex) {
+                        JOptionPane.showMessageDialog(this, "Saldo insuficiente. " + ex.getMessage(), "Atenção !!", JOptionPane.ERROR_MESSAGE);
+                    }
+                } else {
+                    try {
+                        conta.saca(Double.parseDouble(jTextFieldSaca.getText()));
+                        saldo = conta.getSaldo();
+                        jTextFieldTransfere.setText("");
+                    } catch (SaldoInsuficienteException ex) {
+                        JOptionPane.showMessageDialog(this, "Saldo insuficiente. " + ex.getMessage(), "Atenção !!", JOptionPane.ERROR_MESSAGE);
+                    }
+                }
+            }
+        }
+    }
+
+    public void transfereValor() {
+        if (jTextFieldTransfere.getText().isEmpty() || jTextFieldTransfere.getText().equals("")) {
+            JOptionPane.showMessageDialog(this, "Digite algum valor, por favor. ", "Atenção !!", JOptionPane.ERROR_MESSAGE);
+        } else {
+            if (verificaNumero()) {
+                if (cli.getTipoDeConta().equals("Conta Corrente")) {
+                    try {
+                        conta.transfere(conta, Double.parseDouble(jTextFieldTransfere.getText()));
+                        conta.atualiza(0.06);
+                        saldo = conta.getSaldo();
+                        jTextFieldTransfere.setText("");
+                    } catch (SaldoInsuficienteException ex) {
+                        JOptionPane.showMessageDialog(this, "Saldo insuficiente. " + ex, "Atenção !!", JOptionPane.ERROR_MESSAGE);
+                    }
+                } else {
+                    try {
+                        conta.transfere(conta, Double.parseDouble(jTextFieldTransfere.getText()));
+                        conta.atualiza(0.03);
+                        saldo = conta.getSaldo();
+                        jTextFieldTransfere.setText("");
+                    } catch (SaldoInsuficienteException ex) {
+                        JOptionPane.showMessageDialog(this, "Saldo insuficiente. " + ex, "Atenção !!", JOptionPane.ERROR_MESSAGE);
+                    }
+                }
+            }
+        }
+    }
+
+    public void depositaValor() {
+        if (jTextFieldDeposita.getText().isEmpty() || jTextFieldDeposita.getText().equals("")) {
+            JOptionPane.showMessageDialog(this, "Digite algum valor, por favor. ", "Atenção !!", JOptionPane.ERROR_MESSAGE);
+        } else {
+            if (verificaNumero()) {
+                if (cli.getTipoDeConta().equals("Conta Corrente")) {
+                    conta.deposita(Double.parseDouble(jTextFieldDeposita.getText()));
+                    saldo = conta.getSaldo();
+                    jTextFieldDeposita.setText("");
+                } else {
+                    conta.deposita(Double.parseDouble(jTextFieldDeposita.getText()));
+                    saldo = conta.getSaldo();
+                    jTextFieldDeposita.setText("");
+                }
+            }
+        }
+    }
+
+    public void extrato() {
+        JFileChooser arquivo = new JFileChooser();
+        arquivo.setFileSelectionMode(JFileChooser.FILES_ONLY);
+        arquivo.showSaveDialog(this);
+        File file = arquivo.getSelectedFile();
+
+        ArquivoBanco arqb = new ArquivoBanco();
+        if (cli.getTipoDeConta().equals("Conta Corrente")) {
+            arqb.gerarExtrato(file, cli, conta);
+        } else {
+            arqb.gerarExtrato(file, cli, conta);
         }
     }
 }

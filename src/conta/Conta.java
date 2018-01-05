@@ -1,5 +1,7 @@
 package conta;
 
+import javax.swing.JOptionPane;
+
 /**
  *
  * @author DEV-ITEC
@@ -9,7 +11,7 @@ public abstract class Conta {
     private int numero;
     private double saldo = 0;
     private double limite;
-    private Cliente titular;
+    private String titular;
 
     public Conta(int numero) {
         this.numero = numero;
@@ -19,15 +21,10 @@ public abstract class Conta {
 
     }
 
-    public void saca(double valor) {
-        try {
-            if (valor <= this.saldo) {
-                this.saldo -= valor;
-                System.out.println("Você sacou " + getSaldo());
-                throw new SaldoInsuficienteException("Saldo Insuficiente " + "tente um valor menor.");
-            }
-        } catch (SaldoInsuficienteException e) {
-            System.out.println(e.getMessage());
+    public void saca(double valor) throws SaldoInsuficienteException {
+        if (valor <= this.saldo) {
+            this.saldo -= valor;
+            JOptionPane.showMessageDialog(null, "Você sacou: " + valor, "Atenção !!", JOptionPane.INFORMATION_MESSAGE);
         }
     }
 
@@ -39,7 +36,7 @@ public abstract class Conta {
         }
     }
 
-    public void transfere(Conta destino, double valor) {
+    public void transfere(Conta destino, double valor) throws SaldoInsuficienteException {
         saca(valor);
         destino.deposita(valor);
     }
@@ -66,17 +63,21 @@ public abstract class Conta {
         this.numero = numero;
     }
 
-    public Cliente getTitular() {
+    public String getTitular() {
         return titular;
     }
 
-    public void setTitular(Cliente titular) {
+    public void setTitular(String titular) {
         this.titular = titular;
+    }
+
+    public void setLimite(double limite) {
+        this.limite = limite;
     }
 
     @Override
     public String toString() {
-        return "Esta conta de número "+ getNumero() + " tem o saldo de: " + getSaldo() + " Titular: " + getTitular().toString();
+        return "Esta conta de número "+ getNumero() + " tem o saldo de: " + getSaldo() + " Titular: " + getTitular();
     }
 
     @Override

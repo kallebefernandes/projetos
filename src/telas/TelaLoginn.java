@@ -16,7 +16,7 @@ public class TelaLoginn extends javax.swing.JFrame implements Autenticavel {
     Funcionario func = new Funcionario();
 
     public TelaLoginn() {
-        String nome = JOptionPane.showInputDialog(this,"Cadastre sua senha !!", "Cadastra Senha ", JOptionPane.INFORMATION_MESSAGE);
+        String nome = JOptionPane.showInputDialog(this, "Cadastre sua senha !!", "Cadastra Senha ", JOptionPane.INFORMATION_MESSAGE);
         if (!nome.isEmpty() || !nome.equals("")) {
             func.setSenha(Integer.parseInt(nome));
         } else {
@@ -53,6 +53,7 @@ public class TelaLoginn extends javax.swing.JFrame implements Autenticavel {
             }
         });
 
+        jTextFieldUsuario.setEditable(false);
         jTextFieldUsuario.setRequestFocusEnabled(false);
 
         jButtonLogar.setText("Logar");
@@ -103,10 +104,14 @@ public class TelaLoginn extends javax.swing.JFrame implements Autenticavel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonLogarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonLogarActionPerformed
-        if (autenticaSenha(func.getSenha())) {
-            TelaLoginn.this.dispose();
-            TelaPrinciipal tp = new TelaPrinciipal(getFunc());
-            tp.setVisible(true);
+        if (jPasswordFieldSenha.getPassword().length != 0 || !jPasswordFieldSenha.getText().equals("")) {
+            if (autenticaSenha(func.getSenha())) {
+                TelaLoginn.this.dispose();
+                TelaPrinciipal tp = new TelaPrinciipal(getFunc());
+                tp.setVisible(true);
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Digite a Senha!", "Atenção !!!", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_jButtonLogarActionPerformed
 
@@ -160,26 +165,26 @@ public class TelaLoginn extends javax.swing.JFrame implements Autenticavel {
     @Override
     public boolean autenticaSenha(int senha) {
         if (func.ativo(func)) {
-            return func.autenticaSenha(Integer.parseInt(jPasswordFieldSenha.getText()));
+            return func.autenticaSenha(Integer.parseInt(String.valueOf(jPasswordFieldSenha.getPassword())));
         } else {
             return false;
         }
     }
-    
-    public Funcionario getFunc(){
+
+    public Funcionario getFunc() {
         func.setDepartamento("");
         func.setNome("");
         func.setRg(0);
         func.setSalario(0.0);
         func.setEstaNaEmpresa(true);
-        
+
         func.getDtAdmissao();
         func.getNome();
         func.getSalario();
         func.getSenha();
         return func;
     }
-    
+
     public static boolean isKeyPressedEnter(KeyEvent event) {
         return event.getKeyCode() == KeyEvent.VK_ENTER;
     }

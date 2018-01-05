@@ -3,6 +3,9 @@ package telas;
 import banco.ArquivoCliente;
 import banco.Banco;
 import conta.Cliente;
+import conta.Conta;
+import conta.ContaCorrente;
+import conta.ContaPoupanca;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
@@ -23,7 +26,8 @@ import javax.swing.text.MaskFormatter;
 public class TelaClientes extends javax.swing.JFrame {
 
     private final Cliente c = new Cliente();
-    private final Banco conta = new Banco();
+    private final Conta contac = new ContaCorrente(0);
+    private final Conta contap = new ContaPoupanca(0);
 
     public TelaClientes() {
         initComponents();
@@ -302,14 +306,12 @@ public class TelaClientes extends javax.swing.JFrame {
         int sm, i, r, num, peso;
 
         try {
-            // Calculo do 1o. Digito Verificador
+            // Calculo do 1º Digito Verificador
             sm = 0;
             peso = 10;
             for (i = 0; i < 9; i++) {
 
-                // converte o i-esimo caractere do CPF em um numero:
-                // por exemplo, transforma o caractere '0' no inteiro 0         
-                // (48 eh a posicao de '0' na tabela ASCII)         
+// converte o i-esimo caractere do CPF em um numero: por exemplo, transforma o caractere '0' no inteiro 0(48 eh a posicao de '0' na tabela ASCII)         
                 num = (int) (CPF.charAt(i) - 48);
                 sm = sm + (num * peso);
                 peso = peso - 1;
@@ -322,7 +324,7 @@ public class TelaClientes extends javax.swing.JFrame {
                 dig10 = (char) (r + 48); // converte no respectivo caractere numerico
             }
 
-            // Calculo do 2o. Digito Verificador
+            // Calculo do 2º Digito Verificador
             sm = 0;
             peso = 11;
             for (i = 0; i < 10; i++) {
@@ -350,9 +352,29 @@ public class TelaClientes extends javax.swing.JFrame {
     }
 
     private void chamaTelaConta() {
-        TelaContas tc = new TelaContas(c);
-        tc.setVisible(true);
-        tc.setFocusable(true);
+        if (jRadioButtonCC.isSelected()) {
+            setContaCorrente();
+            TelaContas tc = new TelaContas(c, contac);
+            tc.setVisible(true);
+            tc.setFocusable(true);
+        } else if (jRadioButtonCP.isSelected()) {
+            setContaPoupanca();
+            TelaContas tc = new TelaContas(c, contap);
+            tc.setVisible(true);
+            tc.setFocusable(true);
+        }
+    }
+
+    public void setContaCorrente() {
+        contac.setNumero(Integer.parseInt(c.getNumeroConta()));
+        contac.setTitular(c.getNome());
+        contac.setLimite(800.0);
+    }
+
+    public void setContaPoupanca() {
+        contap.setNumero(Integer.parseInt(c.getNumeroConta()));
+        contap.setTitular(c.getNome());
+        contap.setLimite(500.0);
     }
 
     public void fechaTela() {
@@ -360,10 +382,8 @@ public class TelaClientes extends javax.swing.JFrame {
     }
 
     public boolean verificaCampos() {
-        if ((jTextFieldNome.getText().equals("") || jTextFieldNome.getText().isEmpty())
-                && (jTextFieldSobrenome.getText().equals("") || jTextFieldSobrenome.getText().isEmpty())
-                && (jTextPaneContaNumero.getText().equals("") || jTextPaneContaNumero.getText().isEmpty())
-                && (jPasswordFieldSenha.getPassword().equals("") || jPasswordFieldSenha.getText().isEmpty())) {
+        if ((jTextFieldNome.getText().trim().isEmpty())
+                && jTextFieldSobrenome.getText().trim().isEmpty()) {
             JOptionPane.showMessageDialog(this, "Preencher os campos obrigatoriamente. ", "Atenção !!!", JOptionPane.ERROR_MESSAGE);
             return true;
         } else {
@@ -372,13 +392,25 @@ public class TelaClientes extends javax.swing.JFrame {
     }
 
     public boolean verificaNumero() {
-        if ((jTextFieldNome.getText().matches("^[0-9]*$"))
-                || (jTextFieldSobrenome.getText().contains("^[0-9]") || jTextFieldSobrenome.getText().matches("^[0-9]*$"))) {
+        if (contemSomenteNumeros(jTextFieldNome.getText()) || contemSomenteNumeros(jTextFieldSobrenome.getText())) {
             JOptionPane.showMessageDialog(this, "Digite somente letras, por favor. ", "Atenção !!", JOptionPane.ERROR_MESSAGE);
             return true;
         } else {
             return false;
         }
+    }
+
+    public boolean contemSomenteNumeros(String str) {
+        if (str == null || str.length() == 0) {
+            return false;
+        }
+        for (int i = 0; i < str.length(); i++) {
+            //Se encontrar um não-caractere retornará falso
+            if (!Character.isDigit(str.charAt(i))) {
+                return false;
+            }
+        }
+        return true;
     }
 
     public static boolean isKeyPressedEnterOrTab(KeyEvent event) {
@@ -411,6 +443,8 @@ public class TelaClientes extends javax.swing.JFrame {
                         JOptionPane.showMessageDialog(this, "Selecione um arquivo texto pra gravação do cliente. ", "Atenção !!", JOptionPane.ERROR_MESSAGE);
                         return;
                     }
+                } else {
+                    return;
                 }
                 novaTela();
                 chamaTelaConta();

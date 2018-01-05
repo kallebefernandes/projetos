@@ -12,7 +12,7 @@ public class Banco {
     }
 
     public void adicionaConta(Conta c) {
-        contas.put(c.getTitular().getNome(), c);
+        contas.put(c.getTitular(), c);
     }
 
     @SuppressWarnings("element-type-mismatch")

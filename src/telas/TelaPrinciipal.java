@@ -1,5 +1,7 @@
 package telas;
 
+import conta.Cliente;
+import conta.Conta;
 import funcionario.Funcionario;
 import java.awt.event.KeyEvent;
 
@@ -152,7 +154,12 @@ public class TelaPrinciipal extends javax.swing.JFrame {
     }
 
     public void chamaTelaConta() {
-        TelaContas telaConta = new TelaContas();
+        Cliente cliente = new Cliente();
+        Conta conta = new Conta() {
+            @Override
+           public void atualiza(double taxa){};
+        };
+        TelaContas telaConta = new TelaContas(cliente, conta);
         telaConta.setVisible(true);
         telaConta.setFocusable(true);
     }
