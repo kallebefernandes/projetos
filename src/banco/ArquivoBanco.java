@@ -1,5 +1,6 @@
 package banco;
 
+import conta.Cliente;
 import conta.Conta;
 import java.io.BufferedReader;
 import java.io.File;
@@ -15,6 +16,7 @@ import java.io.PrintWriter;
  */
 public class ArquivoBanco {
 
+    private Cliente cli;
     private Conta c;
 
     public String lerConteudoArquivo(File arquivo) throws IOException {
@@ -48,14 +50,16 @@ public class ArquivoBanco {
     }
 
     @SuppressWarnings("null")
-    public void gerarExtrato(File file) {
+    public void gerarExtrato(File file, Cliente cli, Conta c) {
+        cli = this.cli;
+        c= this.c;
         try (FileReader arquiv = new FileReader(file)) {
             BufferedReader lerArq = new BufferedReader(arquiv);
 
             String linha = lerArq.readLine();
             while (linha != null) {
                 linha = lerArq.readLine(); // lê da segunda até a última linha
-                if (linha.contains(c.getTitular().getNumeroConta())) {
+                if (linha.contains(cli.getNumeroConta())) {
                     gravaArquivoConta("Extrato", c, true);
                 } else {
                     System.out.println(" Número da conta não encontrado. ");

@@ -3,13 +3,10 @@ package telas;
 import banco.ArquivoCliente;
 import banco.Banco;
 import conta.Cliente;
-import funcionario.Funcionario;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
 import java.text.ParseException;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.InputMismatchException;
 import java.util.Random;
 import java.util.logging.Level;
@@ -33,8 +30,7 @@ public class TelaClientes extends javax.swing.JFrame {
         novaTela();
         carregaMascaras();
         Random random = new Random();
-        jTextPaneContaNumero.setText(String.valueOf(random.nextInt()));
-        setLabelfuncionario();
+        jTextPaneContaNumero.setText(String.valueOf(random.nextInt(1000)));
     }
 
     @SuppressWarnings("unchecked")
@@ -43,7 +39,6 @@ public class TelaClientes extends javax.swing.JFrame {
 
         jButtonSalvar = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
-        jLabelLogado = new javax.swing.JLabel();
         jTextFieldNome = new javax.swing.JTextField();
         jPasswordFieldSenha = new javax.swing.JPasswordField();
         jTextFieldSobrenome = new javax.swing.JTextField();
@@ -65,10 +60,37 @@ public class TelaClientes extends javax.swing.JFrame {
                 jButtonSalvarActionPerformed(evt);
             }
         });
+        jButtonSalvar.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jButtonSalvarKeyPressed(evt);
+            }
+        });
 
         jLabel1.setText("Nome:");
 
-        jLabelLogado.setText("jLabel5");
+        jTextFieldNome.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jTextFieldNomeKeyPressed(evt);
+            }
+        });
+
+        jPasswordFieldSenha.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jPasswordFieldSenhaKeyPressed(evt);
+            }
+        });
+
+        jTextFieldSobrenome.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jTextFieldSobrenomeKeyPressed(evt);
+            }
+        });
+
+        jFormattedTextCPF.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jFormattedTextCPFKeyPressed(evt);
+            }
+        });
 
         jLabel2.setText("Sobrenome:");
 
@@ -115,7 +137,6 @@ public class TelaClientes extends javax.swing.JFrame {
                             .addComponent(jPasswordFieldSenha)
                             .addComponent(jFormattedTextCPF, javax.swing.GroupLayout.DEFAULT_SIZE, 277, Short.MAX_VALUE))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addComponent(jLabelLogado, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -144,8 +165,7 @@ public class TelaClientes extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1)
                     .addComponent(jButtonSalvar, javax.swing.GroupLayout.DEFAULT_SIZE, 98, Short.MAX_VALUE))
-                .addGap(18, 18, 18)
-                .addComponent(jLabelLogado))
+                .addGap(32, 32, 32))
         );
 
         pack();
@@ -153,38 +173,38 @@ public class TelaClientes extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonSalvarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSalvarActionPerformed
-        if (isCPF(jFormattedTextCPF.getText()) && !verificaCampos()) {
-            try {
-                setCliente();
-                if (!verificaNumero()) {
-                    JFileChooser arquivo = new JFileChooser();
-                    arquivo.setFileSelectionMode(JFileChooser.FILES_ONLY);
-                    arquivo.showOpenDialog(this);
-                    File file = arquivo.getSelectedFile();
-                    if (file != null) {
-                        ArquivoCliente aqc = new ArquivoCliente(c);
-                        aqc.lerConteudoArquivo(file);
-                        aqc.gravaArquivoCliente("ArquivoCliente", c, true);
-                        try {
-                            aqc.gerarArquivoCopia(c);
-                        } catch (IOException ex) {
-                            JOptionPane.showMessageDialog(this, "Não foi possível gerar arquivo cópia " + ex, "Atenção !!", JOptionPane.ERROR_MESSAGE);
-                        }
-                    } else{
-                        JOptionPane.showMessageDialog(this, "Selecione um arquivo texto pra gravação do cliente. ", "Atenção !!", JOptionPane.ERROR_MESSAGE);
-                        return;
-                    }
-                }
-                novaTela();
-                chamaTelaConta();
-                fechaTela();
-            } catch (IOException ex) {
-                Logger.getLogger(TelaClientes.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        } else {
-            JOptionPane.showMessageDialog(this, "CPF não é válido");
-        }
+        salvarCliente();
     }//GEN-LAST:event_jButtonSalvarActionPerformed
+
+    private void jTextFieldNomeKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldNomeKeyPressed
+        if (isKeyPressedEnterOrTab(evt)) {
+            jTextFieldSobrenome.setFocusable(true);
+        }
+    }//GEN-LAST:event_jTextFieldNomeKeyPressed
+
+    private void jTextFieldSobrenomeKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jTextFieldSobrenomeKeyPressed
+        if (isKeyPressedEnterOrTab(evt)) {
+            jFormattedTextCPF.setFocusable(true);
+        }
+    }//GEN-LAST:event_jTextFieldSobrenomeKeyPressed
+
+    private void jFormattedTextCPFKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jFormattedTextCPFKeyPressed
+        if (isKeyPressedEnterOrTab(evt)) {
+            jPasswordFieldSenha.setFocusable(true);
+        }
+    }//GEN-LAST:event_jFormattedTextCPFKeyPressed
+
+    private void jPasswordFieldSenhaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jPasswordFieldSenhaKeyPressed
+        if (isKeyPressedEnterOrTab(evt)) {
+            jButtonSalvar.setFocusable(true);
+        }
+    }//GEN-LAST:event_jPasswordFieldSenhaKeyPressed
+
+    private void jButtonSalvarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jButtonSalvarKeyPressed
+        if (isKeyPressedEnter(evt)) {
+            salvarCliente();
+        }
+    }//GEN-LAST:event_jButtonSalvarKeyPressed
 
     /**
      * @param args the command line arguments
@@ -226,7 +246,6 @@ public class TelaClientes extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabelLogado;
     private javax.swing.JPasswordField jPasswordFieldSenha;
     private javax.swing.JRadioButton jRadioButtonCC;
     private javax.swing.JRadioButton jRadioButtonCP;
@@ -244,14 +263,6 @@ public class TelaClientes extends javax.swing.JFrame {
         } catch (ParseException ex) {
             JOptionPane.showMessageDialog(this, "Não foi possível carregar máscaras " + ex, "Atenção !!", JOptionPane.ERROR_MESSAGE);
         }
-    }
-
-    private void setLabelfuncionario() {
-        Funcionario func = new Funcionario();
-        Calendar date = new GregorianCalendar();
-        func.setDtAdmissao(date.getTime());
-        String nome = func.getNome();
-        jLabelLogado.setText(nome);
     }
 
     public Cliente setCliente() {
@@ -272,7 +283,6 @@ public class TelaClientes extends javax.swing.JFrame {
 
     public final void novaTela() {
         jFormattedTextCPF.setText("");
-        jLabelLogado.setText("");
         jPasswordFieldSenha.setText("");
         jTextFieldNome.setText("");
         jTextFieldSobrenome.setText("");
@@ -362,14 +372,54 @@ public class TelaClientes extends javax.swing.JFrame {
     }
 
     public boolean verificaNumero() {
-        String numeros = "0123456789";
-        KeyEvent evt = null;
-        if ((numeros.contains(evt.getKeyChar()+"") || jTextFieldNome.getText().matches("^[0-9]*$"))
+        if ((jTextFieldNome.getText().matches("^[0-9]*$"))
                 || (jTextFieldSobrenome.getText().contains("^[0-9]") || jTextFieldSobrenome.getText().matches("^[0-9]*$"))) {
             JOptionPane.showMessageDialog(this, "Digite somente letras, por favor. ", "Atenção !!", JOptionPane.ERROR_MESSAGE);
             return true;
         } else {
             return false;
+        }
+    }
+
+    public static boolean isKeyPressedEnterOrTab(KeyEvent event) {
+        return event.getKeyCode() == KeyEvent.VK_ENTER || event.getKeyCode() == KeyEvent.VK_TAB;
+    }
+
+    public static boolean isKeyPressedEnter(KeyEvent event) {
+        return event.getKeyCode() == KeyEvent.VK_ENTER;
+    }
+
+    public void salvarCliente() {
+        if (!verificaCampos() && isCPF(jFormattedTextCPF.getText())) {
+            try {
+                setCliente();
+                if (!verificaNumero()) {
+                    JFileChooser arquivo = new JFileChooser();
+                    arquivo.setFileSelectionMode(JFileChooser.FILES_ONLY);
+                    arquivo.showOpenDialog(this);
+                    File file = arquivo.getSelectedFile();
+                    if (file != null) {
+                        ArquivoCliente aqc = new ArquivoCliente(c);
+                        aqc.lerConteudoArquivo(file);
+                        aqc.gravaArquivoCliente("ArquivoCliente", c, true);
+                        try {
+                            aqc.gerarArquivoCopia(c);
+                        } catch (IOException ex) {
+                            JOptionPane.showMessageDialog(this, "Não foi possível gerar arquivo cópia " + ex, "Atenção !!", JOptionPane.ERROR_MESSAGE);
+                        }
+                    } else {
+                        JOptionPane.showMessageDialog(this, "Selecione um arquivo texto pra gravação do cliente. ", "Atenção !!", JOptionPane.ERROR_MESSAGE);
+                        return;
+                    }
+                }
+                novaTela();
+                chamaTelaConta();
+                fechaTela();
+            } catch (IOException ex) {
+                Logger.getLogger(TelaClientes.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "CPF não é válido");
         }
     }
 }

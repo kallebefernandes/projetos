@@ -23,13 +23,10 @@ public class Funcionario implements Autenticavel {
         estaNaEmpresa = true;
     }
 
-    public void mostraFuncionario() {
-        System.out.println("------------- Informações do Funcionário -----------");
-        System.out.println("Nome: " + nome);
-        System.out.println("Departamento: " + departamento);
-        System.out.println("Data de Admissão: " + dtAdmissao);
-        System.out.println("Data de Demissão: " + dtDemissao);
-        System.out.println("RG: " + rg);
+    @Override
+    public String toString() {
+        return "Informações do Funcionário " + "Nome: " + nome + " Departamento: " + departamento
+                + " Data de Admissão: " + dtAdmissao + " RG: " + rg;
     }
 
     public boolean ativo(Funcionario f) {

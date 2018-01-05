@@ -171,47 +171,63 @@ public class TelaContas extends javax.swing.JFrame {
     }//GEN-LAST:event_jButtonSaldoActionPerformed
 
     private void jButtonDepositaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDepositaActionPerformed
-        if (verificaNumero()) {
-            if (cli.getTipoDeConta().equals("Conta Corrente")) {
-                ContaCorrente contac = new ContaCorrente(Integer.parseInt(cli.getNumeroConta()));
-                contac.setSaldo(Double.parseDouble(jTextFieldDeposita.getText()));
-                contac.deposita(Double.parseDouble(jTextFieldDeposita.getText()));
-                saldo = contac.getSaldo();
-            } else {
-                ContaPoupanca contap = new ContaPoupanca(Integer.parseInt(cli.getNumeroConta()));
-                contap.setSaldo(Double.parseDouble(jTextFieldDeposita.getText()));
-                contap.deposita(Double.parseDouble(jTextFieldDeposita.getText()));
-                saldo = contap.getSaldo();
+        if (jTextFieldDeposita.getText().isEmpty() || jTextFieldDeposita.getText().equals("")) {
+            JOptionPane.showMessageDialog(this, "Digite algum valor, por favor. ", "Atenção !!", JOptionPane.ERROR_MESSAGE);
+        } else {
+            if (verificaNumero()) {
+                if (cli.getTipoDeConta().equals("Conta Corrente")) {
+                    ContaCorrente contac = new ContaCorrente(Integer.parseInt(cli.getNumeroConta()));
+                    contac.deposita(Double.parseDouble(jTextFieldDeposita.getText()));
+                    saldo = contac.getSaldo();
+                    jTextFieldDeposita.setText("");
+                } else {
+                    ContaPoupanca contap = new ContaPoupanca(Integer.parseInt(cli.getNumeroConta()));
+                    contap.deposita(Double.parseDouble(jTextFieldDeposita.getText()));
+                    saldo = contap.getSaldo();
+                    jTextFieldDeposita.setText("");
+                }
             }
         }
     }//GEN-LAST:event_jButtonDepositaActionPerformed
 
     private void jButtonTransfereActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonTransfereActionPerformed
-        if (verificaNumero()) {
-            if (cli.getTipoDeConta().equals("Conta Corrente")) {
-                ContaCorrente contac = new ContaCorrente(Integer.parseInt(cli.getNumeroConta()));
-                contac.transfere(contac, Double.parseDouble(jTextFieldTransfere.getText()));
-                contac.atualiza(0.06);
-                saldo = contac.getSaldo();
-            } else {
-                ContaPoupanca contap = new ContaPoupanca(Integer.parseInt(cli.getNumeroConta()));
-                contap.transfere(contap, Double.parseDouble(jTextFieldTransfere.getText()));
-                contap.atualiza(0.03);
-                saldo = contap.getSaldo();
+        if (jTextFieldTransfere.getText().isEmpty() || jTextFieldTransfere.getText().equals("")) {
+            JOptionPane.showMessageDialog(this, "Digite algum valor, por favor. ", "Atenção !!", JOptionPane.ERROR_MESSAGE);
+        } else {
+            if (verificaNumero()) {
+                if (cli.getTipoDeConta().equals("Conta Corrente")) {
+                    ContaCorrente contac = new ContaCorrente(Integer.parseInt(cli.getNumeroConta()));
+                    contac.transfere(contac, Double.parseDouble(jTextFieldTransfere.getText()));
+                    contac.atualiza(0.06);
+                    saldo = contac.getSaldo();
+                    jTextFieldTransfere.setText("");
+                } else {
+                    ContaPoupanca contap = new ContaPoupanca(Integer.parseInt(cli.getNumeroConta()));
+                    contap.transfere(contap, Double.parseDouble(jTextFieldTransfere.getText()));
+                    contap.atualiza(0.03);
+                    saldo = contap.getSaldo();
+                    jTextFieldTransfere.setText("");
+                }
             }
         }
     }//GEN-LAST:event_jButtonTransfereActionPerformed
 
     private void jButtonSacaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSacaActionPerformed
-        if (verificaNumero()) {
-            if (cli.getTipoDeConta().equals("Conta Corrente")) {
-                ContaCorrente contac = new ContaCorrente(Integer.parseInt(cli.getNumeroConta()));
-                contac.saca(Double.parseDouble(jTextFieldSaca.getText()));
-                saldo = contac.getSaldo();
-            } else {
-                ContaPoupanca contap = new ContaPoupanca(Integer.parseInt(cli.getNumeroConta()));
-                contap.saca(Double.parseDouble(jTextFieldSaca.getText()));
-                saldo = contap.getSaldo();
+        if (jTextFieldSaca.getText().isEmpty() || jTextFieldSaca.getText().equals("")) {
+            JOptionPane.showMessageDialog(this, "Digite algum valor, por favor. ", "Atenção !!", JOptionPane.ERROR_MESSAGE);
+        } else {
+            if (verificaNumero()) {
+                if (cli.getTipoDeConta().equals("Conta Corrente")) {
+                    ContaCorrente contac = new ContaCorrente(Integer.parseInt(cli.getNumeroConta()));
+                    contac.saca(Double.parseDouble(jTextFieldSaca.getText()));
+                    saldo = contac.getSaldo();
+                    jTextFieldSaca.setText("");
+                } else {
+                    ContaPoupanca contap = new ContaPoupanca(Integer.parseInt(cli.getNumeroConta()));
+                    contap.saca(Double.parseDouble(jTextFieldSaca.getText()));
+                    saldo = contap.getSaldo();
+                    jTextFieldTransfere.setText("");
+                }
             }
         }
     }//GEN-LAST:event_jButtonSacaActionPerformed
@@ -223,7 +239,14 @@ public class TelaContas extends javax.swing.JFrame {
         File file = arquivo.getSelectedFile();
 
         ArquivoBanco arqb = new ArquivoBanco();
-        arqb.gerarExtrato(file);
+        if (cli.getTipoDeConta().equals("Conta Corrente")) {
+            ContaCorrente contac = new ContaCorrente(Integer.parseInt(cli.getNumeroConta()));
+            arqb.gerarExtrato(file, cli, contac);
+        } else {
+            ContaPoupanca contap = new ContaPoupanca(Integer.parseInt(cli.getNumeroConta()));
+            arqb.gerarExtrato(file, cli, contap);
+        }
+
     }//GEN-LAST:event_jButtonExtratoActionPerformed
 
     private void jButtonFecharActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonFecharActionPerformed
@@ -277,9 +300,8 @@ public class TelaContas extends javax.swing.JFrame {
     // End of variables declaration//GEN-END:variables
 
     public boolean verificaNumero() {
-        if ((jTextFieldDeposita.getText().contains("^[0-9]") || jTextFieldDeposita.getText().matches("^[0-9]*$"))
-                || (jTextFieldSaca.getText().contains("^[0-9]") || jTextFieldSaca.getText().matches("^[0-9]*$"))
-                || (jTextFieldTransfere.getText().contains("^[0-9]") || jTextFieldTransfere.getText().matches("^[0-9]*$"))) {
+        if (jTextFieldDeposita.getText().matches("^[0-9]*$") || jTextFieldSaca.getText().matches("^[0-9]*$")
+                || jTextFieldTransfere.getText().matches("^[0-9]*$")) {
             return true;
         } else {
             JOptionPane.showMessageDialog(this, "Digite somente números, por favor. ", "Atenção !!", JOptionPane.ERROR_MESSAGE);

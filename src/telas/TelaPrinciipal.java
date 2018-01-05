@@ -1,13 +1,24 @@
 package telas;
 
+import funcionario.Funcionario;
+import java.awt.event.KeyEvent;
+
 /**
  *
  * @author kalebe
  */
 public class TelaPrinciipal extends javax.swing.JFrame {
 
-    public TelaPrinciipal() {
-        initComponents();
+    Funcionario login;
+
+    public TelaPrinciipal(Funcionario login) {
+        initComponents();   
+        this.login = login;
+        setLabelfuncionario();
+    }
+
+    private TelaPrinciipal() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     /**
@@ -21,6 +32,7 @@ public class TelaPrinciipal extends javax.swing.JFrame {
 
         jButtonConta = new javax.swing.JButton();
         jButtonCliente = new javax.swing.JButton();
+        labelLogado = new java.awt.Label();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -38,6 +50,13 @@ public class TelaPrinciipal extends javax.swing.JFrame {
                 jButtonClienteActionPerformed(evt);
             }
         });
+        jButtonCliente.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jButtonClienteKeyPressed(evt);
+            }
+        });
+
+        labelLogado.setEnabled(false);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -49,6 +68,10 @@ public class TelaPrinciipal extends javax.swing.JFrame {
                 .addGap(36, 36, 36)
                 .addComponent(jButtonConta, javax.swing.GroupLayout.PREFERRED_SIZE, 147, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(37, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(labelLogado, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -57,23 +80,27 @@ public class TelaPrinciipal extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButtonCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButtonConta, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(86, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 56, Short.MAX_VALUE)
+                .addComponent(labelLogado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonContaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonContaActionPerformed
-        TelaContas telaConta = new TelaContas();
-        telaConta.setVisible(true);
-        telaConta.setFocusable(true);
+        chamaTelaConta();
     }//GEN-LAST:event_jButtonContaActionPerformed
 
     private void jButtonClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonClienteActionPerformed
-        TelaClientes telaCliente = new TelaClientes();
-        telaCliente.setVisible(true);
-        telaCliente.setFocusable(true);
+        chamaTelaCliente();
     }//GEN-LAST:event_jButtonClienteActionPerformed
+
+    private void jButtonClienteKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jButtonClienteKeyPressed
+        if (isKeyPressedEnter(evt)) {
+            chamaTelaCliente();
+        }
+    }//GEN-LAST:event_jButtonClienteKeyPressed
 
     /**
      * @param args the command line arguments
@@ -111,10 +138,27 @@ public class TelaPrinciipal extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonCliente;
     private javax.swing.JButton jButtonConta;
+    private java.awt.Label labelLogado;
     // End of variables declaration//GEN-END:variables
 
-    private void chamaTelaLogin() {
-        TelaLoginn login = new TelaLoginn();
-        login.setVisible(true);
+    public static boolean isKeyPressedEnter(KeyEvent event) {
+        return event.getKeyCode() == KeyEvent.VK_ENTER;
+    }
+
+    public void chamaTelaCliente() {
+        TelaClientes telaCliente = new TelaClientes();
+        telaCliente.setVisible(true);
+        telaCliente.setFocusable(true);
+    }
+
+    public void chamaTelaConta() {
+        TelaContas telaConta = new TelaContas();
+        telaConta.setVisible(true);
+        telaConta.setFocusable(true);
+    }
+    
+    private void setLabelfuncionario() {
+        login.setNome("Administrador");
+        labelLogado.setText(login.toString());
     }
 }

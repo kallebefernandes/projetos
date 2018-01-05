@@ -2,6 +2,7 @@ package telas;
 
 import funcionario.Funcionario;
 import interfaces.Autenticavel;
+import java.awt.event.KeyEvent;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import javax.swing.JOptionPane;
@@ -15,8 +16,12 @@ public class TelaLoginn extends javax.swing.JFrame implements Autenticavel {
     Funcionario func = new Funcionario();
 
     public TelaLoginn() {
-        String nome = JOptionPane.showInputDialog("Cadastre sua senha !!");
-        func.setSenha(Integer.parseInt(nome));
+        String nome = JOptionPane.showInputDialog(this,"Cadastre sua senha !!", "Cadastra Senha ", JOptionPane.INFORMATION_MESSAGE);
+        if (!nome.isEmpty() || !nome.equals("")) {
+            func.setSenha(Integer.parseInt(nome));
+        } else {
+            JOptionPane.showMessageDialog(this, "Cadastre uma Senha!", "Atenção !!!", JOptionPane.ERROR_MESSAGE);
+        }
         Calendar date = new GregorianCalendar();
         func.setDtAdmissao(date.getTime());
         initComponents();
@@ -41,6 +46,14 @@ public class TelaLoginn extends javax.swing.JFrame implements Autenticavel {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         setName("Tela de Login"); // NOI18N
+
+        jPasswordFieldSenha.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jPasswordFieldSenhaKeyPressed(evt);
+            }
+        });
+
+        jTextFieldUsuario.setRequestFocusEnabled(false);
 
         jButtonLogar.setText("Logar");
         jButtonLogar.addActionListener(new java.awt.event.ActionListener() {
@@ -92,10 +105,16 @@ public class TelaLoginn extends javax.swing.JFrame implements Autenticavel {
     private void jButtonLogarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonLogarActionPerformed
         if (autenticaSenha(func.getSenha())) {
             TelaLoginn.this.dispose();
-            TelaPrinciipal tp = new TelaPrinciipal();
+            TelaPrinciipal tp = new TelaPrinciipal(getFunc());
             tp.setVisible(true);
         }
     }//GEN-LAST:event_jButtonLogarActionPerformed
+
+    private void jPasswordFieldSenhaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jPasswordFieldSenhaKeyPressed
+        if (isKeyPressedEnter(evt)) {
+            chamaTelaPrincipal();
+        }
+    }//GEN-LAST:event_jPasswordFieldSenhaKeyPressed
 
     /**
      * @param args the command line arguments
@@ -145,5 +164,29 @@ public class TelaLoginn extends javax.swing.JFrame implements Autenticavel {
         } else {
             return false;
         }
+    }
+    
+    public Funcionario getFunc(){
+        func.setDepartamento("");
+        func.setNome("");
+        func.setRg(0);
+        func.setSalario(0.0);
+        func.setEstaNaEmpresa(true);
+        
+        func.getDtAdmissao();
+        func.getNome();
+        func.getSalario();
+        func.getSenha();
+        return func;
+    }
+    
+    public static boolean isKeyPressedEnter(KeyEvent event) {
+        return event.getKeyCode() == KeyEvent.VK_ENTER;
+    }
+
+    private void chamaTelaPrincipal() {
+        TelaPrinciipal telaPrincipal = new TelaPrinciipal(func);
+        telaPrincipal.setVisible(true);
+        TelaLoginn.this.dispose();
     }
 }
