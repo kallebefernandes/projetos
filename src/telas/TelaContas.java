@@ -3,8 +3,6 @@ package telas;
 import banco.ArquivoBanco;
 import conta.Cliente;
 import conta.Conta;
-import conta.ContaCorrente;
-import conta.ContaPoupanca;
 import conta.SaldoInsuficienteException;
 import java.io.File;
 import javax.swing.JFileChooser;
@@ -19,6 +17,7 @@ public class TelaContas extends javax.swing.JFrame {
     private final Cliente cli;
     private double saldo;
     private final Conta conta;
+    private final ArquivoBanco arqb = new ArquivoBanco();
 
     public TelaContas(Cliente cli, Conta conta) {
         initComponents();
@@ -305,7 +304,6 @@ public class TelaContas extends javax.swing.JFrame {
         arquivo.showSaveDialog(this);
         File file = arquivo.getSelectedFile();
 
-        ArquivoBanco arqb = new ArquivoBanco();
         if (cli.getTipoDeConta().equals("Conta Corrente")) {
             arqb.gerarExtrato(file, cli, conta);
         } else {

@@ -1,7 +1,6 @@
 package telas;
 
 import banco.ArquivoCliente;
-import banco.Banco;
 import conta.Cliente;
 import conta.Conta;
 import conta.ContaCorrente;
@@ -278,8 +277,8 @@ public class TelaClientes extends javax.swing.JFrame {
             c.setTipoDeConta("Conta Corrente");
         } else if (jRadioButtonCP.isSelected()) {
             c.setTipoDeConta("Conta Poupança");
-        } else {
-            c.setTipoDeConta("Não Selecionado");
+        } else if (jRadioButtonCC.isSelected() && jRadioButtonCP.isSelected()) {
+            JOptionPane.showMessageDialog(this, "Selecione apenas um tipo de conta. ", "Atenção !!", JOptionPane.ERROR_MESSAGE);
         }
 
         return c;

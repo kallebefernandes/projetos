@@ -1,7 +1,5 @@
 package telas;
 
-import conta.Cliente;
-import conta.Conta;
 import funcionario.Funcionario;
 import java.awt.event.KeyEvent;
 
@@ -20,7 +18,7 @@ public class TelaPrinciipal extends javax.swing.JFrame {
     }
 
     private TelaPrinciipal() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
     }
 
     /**
@@ -91,7 +89,7 @@ public class TelaPrinciipal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonContaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonContaActionPerformed
-        chamaTelaConta();
+//        chamaTelaConta();
     }//GEN-LAST:event_jButtonContaActionPerformed
 
     private void jButtonClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonClienteActionPerformed
@@ -153,16 +151,16 @@ public class TelaPrinciipal extends javax.swing.JFrame {
         telaCliente.setFocusable(true);
     }
 
-    public void chamaTelaConta() {
-        Cliente cliente = new Cliente();
-        Conta conta = new Conta() {
-            @Override
-           public void atualiza(double taxa){};
-        };
-        TelaContas telaConta = new TelaContas(cliente, conta);
-        telaConta.setVisible(true);
-        telaConta.setFocusable(true);
-    }
+//    public void chamaTelaConta() {
+//        Cliente cliente = new Cliente();
+//        Conta conta = new Conta() {
+//            @Override
+//           public void atualiza(double taxa){};
+//        };
+//        TelaContas telaConta = new TelaContas(cliente, conta);
+//        telaConta.setVisible(true);
+//        telaConta.setFocusable(true);
+//    }
     
     private void setLabelfuncionario() {
         login.setNome("Administrador");

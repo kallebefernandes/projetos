@@ -59,6 +59,7 @@ public class ArquivoBanco {
                 linha = lerArq.readLine(); // lê da segunda até a última linha
                 if (linha.contains(cli.getNumeroConta())) {
                     gravaArquivoConta("Extrato", c, true);
+                    return;
                 }
             }
         } catch (FileNotFoundException ex) {
